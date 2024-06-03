@@ -8,10 +8,11 @@ source /var/web/py311/bin/activate
 cd /var/web/VulnTracker
 
 # Run the scripts
-python3 manage.py cisa_known_exploited
+python3 manage.py fetch_cisa_known_exploited
 python3 manage.py fetch_cves -p past_day
-python3 manage.py haveibeenpwned
-python3 manage.py nessus_fetch
-python3 manage.py shodan_scan
+python3 manage.py fetch_haveibeenpwned
+python3 manage.py fetch_nessus
+python3 manage.py fetch_shodan
 python3 manage.py fetch_software
-python3 manage.py fetchvulnerabilities
+python3 manage.py fetch_vulnerabilities
+python3 manage.py fetch_machine_vulns.py

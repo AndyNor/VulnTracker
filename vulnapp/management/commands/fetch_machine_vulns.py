@@ -120,7 +120,10 @@ class Command(BaseCommand):
             }
             
             MachineReference.objects.all().delete()
-            vulnerabilities = Vulnerability.objects.all()
+            vulnerabilities = Vulnerability.objects.filter(exposedMachines__gte=1).filter(cvssV3__gte=8.0)
+            print(len(vulnerabilities))
+            import sys
+            sys.exit("Ferdig")
 
             vulnerabilities_to_retry = self.process_vulnerabilities(vulnerabilities, headers)
 

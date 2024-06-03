@@ -5,7 +5,14 @@ from .models import *
 admin.site.register(Keyword)
 admin.site.register(Blacklist)
 admin.site.register(CVE)
-admin.site.register(Vulnerability)
+
+@admin.register(Vulnerability)
+class VulnerabilityAdmin(admin.ModelAdmin):
+	list_display = ('id', 'name', 'severity', 'cvssV3', 'cvssVector', 'exposedMachines', 'publishedOn', 'updatedOn', 'firstDetected', 'publicExploit', 'exploitVerified', 'cveSupportability')
+	search_fields = ('name', 'description', 'id',)
+	list_filter = ('severity', 'cvssV3', 'exposedMachines')
+
+
 admin.site.register(MachineReference)
 admin.site.register(HaveIBeenPwnedBreaches)
 admin.site.register(HaveIBeenPwnedBreachedAccounts)
