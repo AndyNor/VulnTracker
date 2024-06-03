@@ -6,7 +6,7 @@ from vulnapp import secrets
 import json
 
 class Command(BaseCommand):
-    help = 'Scans IP addresses in the 171.23.0.0/16 range and stores the results in the database'
+    help = 'Scans IP range and store the results in the database'
 
     def handle(self, *args, **options):
         api_key = os.environ.get('SHODAN_API_SECRET')
@@ -14,7 +14,11 @@ class Command(BaseCommand):
             raise CommandError('SHODAN_API_SECRET environment variable not set')
 
         api = shodan.Shodan(api_key)
-        ip_range = '171.23.0.0/16'
+
+        ip_range = os.environ.get('SHODAN_SUBNET')
+        if not ip_range:
+            raise CommandError('SHODAN_SUBNET environment variable not set')
+
         scan_status = ScanStatus.objects.create(scan_type='Shodan_IP_Range_Scan', status='in_progress', details='{}')
 
         try:
