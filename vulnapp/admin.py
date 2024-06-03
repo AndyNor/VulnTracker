@@ -8,9 +8,9 @@ admin.site.register(CVE)
 
 @admin.register(Vulnerability)
 class VulnerabilityAdmin(admin.ModelAdmin):
-	list_display = ('id', 'name', 'severity', 'cvssV3', 'cvssVector', 'exposedMachines', 'publishedOn', 'updatedOn', 'firstDetected', 'publicExploit', 'exploitVerified', 'cveSupportability')
-	search_fields = ('name', 'description', 'id',)
-	list_filter = ('severity', 'cvssV3', 'exposedMachines')
+	list_display = ('id', 'description', 'severity', 'cvssV3', 'exploitTypes', 'exposedMachines', 'publishedOn', 'updatedOn', 'publicExploit', 'exploitVerified')
+	search_fields = ('name', 'description', 'id', 'cvssVector', 'exploitUris')
+	list_filter = ('severity', 'publicExploit', 'updatedOn', 'exploitInKit',)
 
 
 admin.site.register(MachineReference)

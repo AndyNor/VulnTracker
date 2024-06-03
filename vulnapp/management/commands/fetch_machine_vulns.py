@@ -60,7 +60,12 @@ class Command(BaseCommand):
 
     def process_vulnerabilities(self, vulnerabilities, headers):
         vulnerabilities_to_retry = []
-        for vulnerability in vulnerabilities:
+        len_vulnerabilities = len(vulnerabilities)
+        for idx, vulnerability in enumerate(vulnerabilities):
+
+            if idx % 50 == 0:
+                print(f"{idx} av {antall_records}")
+
             retry_count = 0
             while retry_count < 3:  # Allow up to 3 retries
                 machine_references_data = self.fetch_machine_references(vulnerability.id, headers)
@@ -121,9 +126,6 @@ class Command(BaseCommand):
             
             MachineReference.objects.all().delete()
             vulnerabilities = Vulnerability.objects.filter(exposedMachines__gte=1).filter(cvssV3__gte=8.0)
-            print(len(vulnerabilities))
-            import sys
-            sys.exit("Ferdig")
 
             vulnerabilities_to_retry = self.process_vulnerabilities(vulnerabilities, headers)
 
