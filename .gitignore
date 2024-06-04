@@ -2,5 +2,5 @@
 *.pyc
 *.sqlite3
 *migrations
-*secrets.py
+*project_secrets.py
 *.json

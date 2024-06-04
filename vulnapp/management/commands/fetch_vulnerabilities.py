@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from dateutil.parser import parse
 import requests
 from vulnapp.models import Vulnerability, ScanStatus
-import secrets
+import project_secrets
 import os
 import json
 

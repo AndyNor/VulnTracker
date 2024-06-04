@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from vulnapp.models import ShodanScanResult, ScanStatus
 import os
 import shodan
-import secrets
+import project_secrets
 import json
 
 class Command(BaseCommand):

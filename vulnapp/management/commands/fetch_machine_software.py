@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import requests
 from vulnapp.models import Software, SoftwareHosts, ScanStatus
-import secrets
+import project_secrets
 import os
 from django.db.models import Case, When
 

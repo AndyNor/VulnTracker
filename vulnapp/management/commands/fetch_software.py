@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 import requests
 import os
 from vulnapp.models import Software, ScanStatus
-import secrets
+import project_secrets
 
 class Command(BaseCommand):
     help = 'Imports software data from Microsoft Security Center API'
