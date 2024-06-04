@@ -9,7 +9,7 @@ from vulnapp.models import NessusData, ScanStatus
 from django.conf import settings
 import os
 from pathlib import Path
-from vulnapp import secrets
+import secrets
 
 class Command(BaseCommand):
     help = 'Download Nessus scan data, perform NMAP scans, and save the results in the database.'

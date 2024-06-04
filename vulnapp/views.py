@@ -23,7 +23,6 @@ from django.db.models.functions import ExtractYear
 from django.db.models import Count, Q, Sum
 from django.urls import reverse, NoReverseMatch
 from .models import CVE, Comment, HostToBSS, NessusData, Vulnerability, MachineReference, HaveIBeenPwnedBreaches, HaveIBeenPwnedBreachedAccounts, Software, SoftwareHosts, ScanStatus, ShodanScanResult
-from vulnapp import secrets
 
 def index(request):
     """

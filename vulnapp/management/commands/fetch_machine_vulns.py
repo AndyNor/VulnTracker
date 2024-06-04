@@ -6,7 +6,7 @@ import requests
 import time
 from dateutil.parser import parse
 from vulnapp.models import ScanStatus, Vulnerability, MachineReference
-from vulnapp import secrets
+import secrets
 
 class Command(BaseCommand):
     help = 'Imports machine reference data for vulnerabilities from Microsoft Security Center API'
