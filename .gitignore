@@ -1,5 +1,6 @@
 
 *.pyc
 *.sqlite3
-/vulnapp/migrations
-vulnapp/secrets.py
+*migrations
+*secrets.py
+*.json
