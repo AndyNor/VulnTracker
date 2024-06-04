@@ -6,6 +6,10 @@ import project_secrets
 import os
 import json
 
+# Det er ca 225.805 sårbarheter og de fleste er vi ikke berørt av. Vi henter 8000 om gangen.
+# kanskje heller se på api/vulnerabilities/machinesVulnerabilities?
+
+
 class Command(BaseCommand):
     help = 'Imports vulnerability data from Microsoft Security Center API'
 
@@ -48,6 +52,7 @@ class Command(BaseCommand):
 
             while True:
                 url = f"{base_url}?$top={page_size}&$skip={skip}"
+                print(f"Fetching page {url}")
                 response = requests.get(url, headers=headers)
 
                 if response.status_code == 200:

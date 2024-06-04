@@ -64,7 +64,7 @@ class Command(BaseCommand):
         for idx, vulnerability in enumerate(vulnerabilities):
 
             if idx % 50 == 0:
-                print(f"{idx} av {antall_records}")
+                print(f"{idx} av {len_vulnerabilities}")
 
             retry_count = 0
             while retry_count < 3:  # Allow up to 3 retries
@@ -124,6 +124,7 @@ class Command(BaseCommand):
                 'Content-Type': 'application/json'
             }
             
+            runtime_t0 = time.time()
             MachineReference.objects.all().delete()
             vulnerabilities = Vulnerability.objects.filter(exposedMachines__gte=1).filter(cvssV3__gte=8.0)
 
@@ -132,6 +133,10 @@ class Command(BaseCommand):
             while vulnerabilities_to_retry:
                 self.stdout.write(self.style.WARNING("Retrying for vulnerabilities that failed in the first round..."))
                 vulnerabilities_to_retry = self.process_vulnerabilities(vulnerabilities_to_retry, headers)
+
+            runtime_t1 = time.time()
+            total_runtime = runtime_t1 - runtime_t0
+            print(total_runtime)
 
             scan_status.status = 'success'
             scan_status.details = '{}'
