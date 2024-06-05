@@ -4,3 +4,4 @@
 *migrations
 *project_secrets.py
 *.json
+this_env.py
