@@ -61,7 +61,7 @@ MIDDLEWARE = [
 
 # Security headers. CSP reqires "CSPMiddleware"
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "cdn.jsdelivr.net/npm/*")
 CSP_FRAME_SRC = ("'self'",)
 CSP_IMG_SRC = ("'self' data:")
 CSP_STYLE_SRC = ("'unsafe-inline'", "'self'",)
