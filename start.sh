@@ -1,3 +1,3 @@
 #!/bin/sh
-source /var/web/py311/bin/activate
+source /var/web/venv_py311/bin/activate
 cd var/web/VulnTracker2/

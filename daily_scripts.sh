@@ -2,7 +2,7 @@
 #: 0 0 * * * /var/web/daily_scripts.sh
 
 # Activate the python venv
-source /var/web/py311/bin/activate
+source /var/web/venv_py311/bin/activate
 
 # CD to project dir
 cd /var/web/VulnTracker2/
