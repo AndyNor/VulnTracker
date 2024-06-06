@@ -34,11 +34,11 @@ else:
 
 
 if THIS_ENVIRONMENT == "PROD":
-    ALLOWED_HOSTS = ["https://vulnerabilities.oslo.kommune.no",]
+    ALLOWED_HOSTS = ["*",]
     CSRF_TRUSTED_ORIGINS = ["https://vulnerabilities.oslo.kommune.no",]
 
 if THIS_ENVIRONMENT == "TEST":
-    ALLOWED_HOSTS = ['localhost',]
+    ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
