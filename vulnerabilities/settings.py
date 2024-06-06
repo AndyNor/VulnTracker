@@ -32,7 +32,13 @@ if THIS_ENVIRONMENT == "PROD":
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+
+if THIS_ENVIRONMENT == "PROD":
+    ALLOWED_HOSTS = ["https://vulnerabilities.oslo.kommune.no",]
+    CSRF_TRUSTED_ORIGINS = ["https://vulnerabilities.oslo.kommune.no",]
+
+if THIS_ENVIRONMENT == "TEST":
+    ALLOWED_HOSTS = ['localhost',]
 
 
 # Application definition
