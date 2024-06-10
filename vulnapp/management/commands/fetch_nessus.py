@@ -22,7 +22,7 @@ class Command(BaseCommand):
         return json_data
 
     def handle(self, *args, **options):
-        scan_status = ScanStatus.objects.create(scan_type='Nessus Import', status='in_progress', details='{}')
+        scan_status = ScanStatus.objects.create(scan_type='Nessus', status='in_progress', details='{}')
         scan_ids = [20]
         nmap_scans = {}
         nmap_scanned_hosts = []

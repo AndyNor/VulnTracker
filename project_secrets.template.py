@@ -1,6 +1,7 @@
 import os
 
 # Django
+#python manage.py shell -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 os.environ["DJANGO_SECRET_KEY"] = ""
 
 # Authentication Entra ID
