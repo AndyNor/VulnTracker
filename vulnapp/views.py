@@ -803,7 +803,7 @@ def shodan_results(request):
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=14)
-	results = ShodanScanResult.objects.all().filter(Q(~port=None)).filter(updated_at__gte=tidsgrense).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(updated_at__gte=tidsgrense).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
