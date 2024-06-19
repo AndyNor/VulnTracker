@@ -804,7 +804,7 @@ def shodan_results(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
-	results = ShodanScanResult.objects.all().order_by('created_at')
+	results = ShodanScanResult.objects.all().order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
