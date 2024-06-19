@@ -400,16 +400,16 @@ def haveibeenpwned_breaches(request):
 	years = HaveIBeenPwnedBreaches.objects.annotate(year=ExtractYear('breach_date')).values_list('year', flat=True).distinct().order_by('-year')
 
 	# Filter breaches based on the selected year
-	breaches = HaveIBeenPwnedBreaches.objects.all()
-	if filter_year:
-		breaches = breaches.filter(breach_date__year=filter_year)
+	breaches = HaveIBeenPwnedBreaches.objects.all().order_by("-breach_date")
+	#if filter_year:
+	#	breaches = breaches.filter(breach_date__year=filter_year)
 
 	# Adjust sorting here before adding dynamic attributes
-	if sort_by in ['pwn_count_desc', 'pwn_count_asc']:
-		if sort_by == 'pwn_count_desc':
-			breaches = breaches.order_by('-pwn_count')
-		elif sort_by == 'pwn_count_asc':
-			breaches = breaches.order_by('pwn_count')
+	#if sort_by in ['pwn_count_desc', 'pwn_count_asc']:
+	#	if sort_by == 'pwn_count_desc':
+	#		breaches = breaches.order_by('-pwn_count')
+	#	elif sort_by == 'pwn_count_asc':
+	#		breaches = breaches.order_by('pwn_count')
 
 	# Convert QuerySet to list for dynamic sorting
 	breaches_list = list(breaches)
@@ -421,8 +421,8 @@ def haveibeenpwned_breaches(request):
 		breach.breached_users_count = len(breached_users)  # Store count for sorting
 
 	# Sort by breached_users_count if required
-	if sort_by in ['breached_users_desc', 'breached_users_asc']:
-		breaches_list.sort(key=lambda x: x.breached_users_count, reverse=(sort_by == 'breached_users_desc'))
+	#if sort_by in ['breached_users_desc', 'breached_users_asc']:
+	#	breaches_list.sort(key=lambda x: x.breached_users_count, reverse=(sort_by == 'breached_users_desc'))
 
 	context = {
 		'breaches': breaches_list,  # Use the sorted list
