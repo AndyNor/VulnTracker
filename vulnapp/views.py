@@ -1,28 +1,26 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import CVE, Keyword, Blacklist
-from .forms import KeywordForm, KeywordUploadForm, BlacklistForm
 import csv
+import os
+import re
+import requests
+import json
+import datetime
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils import timezone
-from datetime import timedelta
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.urls import reverse, NoReverseMatch
 from django.views.decorators.http import require_POST
 from django.contrib.contenttypes.models import ContentType
-import json
 from django.shortcuts import render
 from django.utils import timezone
-from datetime import timedelta
-import os
-import requests
 from django.db import transaction
-import re
-from django.http import HttpResponseRedirect
 from django.db.models.functions import ExtractYear
 from django.db.models import Count, Q, Sum
-from django.urls import reverse, NoReverseMatch
-from .models import CVE, Comment, HostToBSS, NessusData, Vulnerability, MachineReference, HaveIBeenPwnedBreaches, HaveIBeenPwnedBreachedAccounts, Software, SoftwareHosts, ScanStatus, ShodanScanResult
+
+from .models import *
+from .forms import *
 
 def index(request):
 	"""
@@ -46,14 +44,14 @@ def index(request):
 
 	# Apply date filter
 	if date_filter == 'past_day':
-		start_date = now - timedelta(days=1)
+		start_date = now - datetime.timedelta(days=1)
 		cves = cves.filter(published_date__gte=start_date)
 	elif date_filter == 'past_week':
-		start_date = now - timedelta(days=7)
+		start_date = now - datetime.timedelta(days=7)
 		cves = cves.filter(published_date__gte=start_date)
 	elif date_filter == 'past_weekend':
-		weekend_start = now - timedelta(days=now.weekday() + 2)  # Get the last Friday
-		weekend_end = weekend_start + timedelta(days=2)  # Weekend is Friday to Sunday
+		weekend_start = now - datetime.timedelta(days=now.weekday() + 2)  # Get the last Friday
+		weekend_end = weekend_start + datetime.timedelta(days=2)  # Weekend is Friday to Sunday
 		cves = cves.filter(published_date__range=(weekend_start, weekend_end))
 	elif date_filter == 'this_month':
 		start_date = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
@@ -804,7 +802,8 @@ def shodan_results(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
-	results = ShodanScanResult.objects.all().order_by('-created_at')
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=14)
+	results = ShodanScanResult.objects.all().filter(updated_at__gte=tidsgrense).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
