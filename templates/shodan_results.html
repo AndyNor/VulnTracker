@@ -31,7 +31,7 @@
       <tbody>
     {% for result in results %}
     <tr>
-        <td>{{ result.created_at|date:"Y-m-d" }}</td>
+        <td>{{ result.created_at|timesince }}</td>
         <td>{{ result.ip_address|default:"" }}</td>
         <td>{{ result.port|default:"" }} {{ result.transport }}</td>
         <td>{{ result.product|default:"" }} <br> {{ result.http_server|default:"" }}</td>
