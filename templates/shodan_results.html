@@ -38,7 +38,7 @@
         <td>{{ result.http_title|default:"" }}</td>
         <td>{{ result.http_status|default:"" }} {{result.http_status_display}}</td>
         <td>{{ result.hostnames|default:"" }}</td>
-        <td>{% for vul in result.vulns_display %} {{ vul }}<br> {% endfor%}</td>
+        <td>{{ result.vulns_display }}</td>
         <td>
             <div class="comment-form">
                 <form action="{% url 'add_comment' %}" method="post">

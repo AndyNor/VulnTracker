@@ -213,9 +213,10 @@ class ShodanScanResult(models.Model):
 		return self.ip_address
 
 	def vulns_display(self):
-		if self.vulns:
-			return [v for v in json.loads(self.vulns)]
-		return ""
+		try:
+			return len(json.loads(self.vulns))
+		except:
+			return ""
 
 	def http_status_display(self):
 		lookup_table = {
