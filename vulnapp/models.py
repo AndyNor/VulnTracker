@@ -192,8 +192,20 @@ class ScanStatus(models.Model):
 class ShodanScanResult(models.Model):
     # Stores a singular shodan scan results as an individual entry.
     ip_address = models.CharField(max_length=15, unique=True)
-    data = models.JSONField()  # Stores the JSON data returned by Shodan
+    port = models.CharField(max_length=15, null=True)
+    transport = models.CharField(max_length=15, null=True)
+    product = models.CharField(max_length=300, null=True)
+    vulns = models.TextField(null=True)
+    http_status = models.CharField(max_length=15, null=True)
+    http_title = models.CharField(max_length=300, null=True)
+    http_server = models.CharField(max_length=300, null=True)
+    hostnames = models.TextField(null=True)
+    data = models.TextField(null=True)
+    cpe23 = models.CharField(max_length=300, null=True)
+    info = models.TextField(null=True)
+    json_data = models.JSONField(null=True)  # Stores the JSON data returned by Shodan
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.ip_address

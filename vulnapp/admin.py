@@ -6,6 +6,7 @@ admin.site.register(Keyword)
 admin.site.register(Blacklist)
 admin.site.register(CVE)
 
+
 @admin.register(Vulnerability)
 class VulnerabilityAdmin(admin.ModelAdmin):
 	list_display = ('id', 'description', 'severity', 'cvssV3', 'exploitTypes', 'exposedMachines', 'publishedOn', 'updatedOn', 'publicExploit', 'exploitVerified')
@@ -20,7 +21,19 @@ admin.site.register(ExploitedVulnerability)
 admin.site.register(Software)
 admin.site.register(SoftwareHosts)
 admin.site.register(ScanStatus)
-admin.site.register(ShodanScanResult)
+
+
+@admin.register(ShodanScanResult)
+class ShodanScanResultAdmin(admin.ModelAdmin):
+	list_display = ('ip_address', 'created_at', 'updated_at', 'transport', 'port', 'product', 'info', 'http_status', 'http_server', 'http_title', 'hostnames', 'cpe23')
+	search_fields = ('ip_address', 'transport', 'port', 'product', 'vulns', 'http_status', 'http_title', 'http_server', 'hostnames', 'data', 'cpe23', 'info')
+
+
 admin.site.register(NessusData)
-admin.site.register(Comment)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+	list_display = ('object_id', 'created_at', 'updated_at', 'content',)
+
 admin.site.register(HostToBSS)
