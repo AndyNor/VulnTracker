@@ -42,7 +42,7 @@ class Command(BaseCommand):
 						"port": result['port'],
 						"transport": result.get('transport', None),
 						"product": result.get('product', None),
-						"vulns": json.dumps(result.get('vulns', {}).keys()),
+						"vulns": json.dumps(list(result.get('vulns', {}).keys())),
 						"http_status": result.get('http', {}).get('status', None),
 						"http_title": result.get('http', {}).get('title', None),
 						"http_server": result.get('http', {}).get('server', None),
