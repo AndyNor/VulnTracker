@@ -13,7 +13,7 @@ body, html {
 .dashboard-container {
     display: flex;
     height: 100%;
-    width: 80%;
+    width: 90%;
     margin: auto;
 }
 
@@ -54,7 +54,6 @@ body, html {
     flex-grow: 1;
     background: #ECEFF1;
     padding: 20px;
-    overflow-y: auto;
     width: 100%;
 }
 
