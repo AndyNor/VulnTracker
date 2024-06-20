@@ -11,3 +11,4 @@ cd /var/web/VulnTracker2/
 # Run the scripts
 python manage.py fetch_cisa_known_exploited
 python manage.py fetch_cves -p past_day
+

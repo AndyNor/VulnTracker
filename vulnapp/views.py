@@ -22,7 +22,13 @@ from django.db.models import Count, Q, Sum
 from .models import *
 from .forms import *
 
-def index(request):
+def home(request):
+	return render(request, 'home.html', {
+		'scan_status': fetch_scan_info()
+	})
+
+
+def cve(request):
 	"""
 	Index function to display the main page.
 	This page displays the CVE information from NVD as well as scan status.
@@ -76,7 +82,7 @@ def index(request):
 	elif sort_by == 'date_asc':
 		cves = cves.order_by('published_date')
 
-	return render(request, 'index.html', {
+	return render(request, 'cve.html', {
 		'cves': cves,
 		'current_sort': sort_by,
 		'current_order': order,
