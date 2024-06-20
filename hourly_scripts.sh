@@ -1,6 +1,4 @@
 #!/bin/bash
-# 0 7,11,14,17 * * * /var/web/hourly_scripts.sh
-
 #git update-index --chmod=+x hourly_scripts.sh
 #git commit -m"Executable!"
 

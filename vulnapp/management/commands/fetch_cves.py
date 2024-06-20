@@ -27,7 +27,6 @@ class Command(BaseCommand):
         }
         
         scan_type = "NIST CVEs"
-
         scan_status = ScanStatus.objects.create(scan_type=scan_type, status='in_progress', details='{}')
 
         period = options.get('period', 'past_day')

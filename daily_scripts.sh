@@ -1,6 +1,4 @@
 #!/bin/bash
-# 0 0 * * * /var/web/daily_scripts.sh
-
 #git update-index --chmod=+x daily_scripts.sh
 #git commit -m"Executable!"
 
