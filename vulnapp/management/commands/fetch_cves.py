@@ -26,7 +26,9 @@ class Command(BaseCommand):
             'User-Agent': 'CVEFetcher/1.0'
         }
         
-        scan_status = ScanStatus.objects.create(scan_type='CVE', status='in_progress', details='{}')
+        scan_type = "NIST CVEs"
+
+        scan_status = ScanStatus.objects.create(scan_type=scan_type, status='in_progress', details='{}')
 
         period = options.get('period', 'past_day')
 

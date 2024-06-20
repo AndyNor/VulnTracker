@@ -20,7 +20,11 @@ admin.site.register(HaveIBeenPwnedBreachedAccounts)
 admin.site.register(ExploitedVulnerability)
 admin.site.register(Software)
 admin.site.register(SoftwareHosts)
-admin.site.register(ScanStatus)
+
+
+@admin.register(ScanStatus)
+class ScanStatusAdmin(admin.ModelAdmin):
+	list_display = ('completed_at', 'scan_type', 'status', 'error_message')
 
 
 @admin.register(ShodanScanResult)
