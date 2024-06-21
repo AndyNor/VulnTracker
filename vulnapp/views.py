@@ -123,7 +123,7 @@ def keyword_view(request):
 			upload_form = KeywordUploadForm(request.POST, request.FILES)
 			if upload_form.is_valid():
 				file = request.FILES['file']
-				content = json.reads(file)
+				content = json.loads(file)
 				for item in content:
 					keyword, created = Keyword.objects.get_or_create(word=row[0].strip())  # Assuming a list of strings
 				return redirect('keywords')
