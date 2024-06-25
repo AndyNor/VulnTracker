@@ -208,15 +208,23 @@ class ShodanScanResult(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	comments = models.TextField(null=True)
+	scan_timestamp = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.ip_address
 
-	def vulns_display(self):
+	def vulns_count(self):
 		try:
 			return len(json.loads(self.vulns))
 		except:
 			return ""
+
+
+	def hostnames_list(self):
+		try:
+			return json.loads(self.hostnames)
+		except:
+			return []
 
 	def http_status_display(self):
 		lookup_table = {

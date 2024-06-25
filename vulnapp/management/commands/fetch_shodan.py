@@ -4,6 +4,8 @@ import os
 import shodan
 import project_secrets
 import json
+from datetime import datetime
+import pytz
 
 class Command(BaseCommand):
 	help = 'Scans IP range and store the results in the database'
@@ -36,6 +38,10 @@ class Command(BaseCommand):
 			for result in results['matches']:
 				ip_address = result['ip_str']
 
+				timestamp = result.get('timestamp', None)
+				if timestamp:
+					timestamp = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%f')
+
 				ShodanScanResult.objects.update_or_create(
 					ip_address=ip_address,
 					defaults = {
@@ -46,10 +52,11 @@ class Command(BaseCommand):
 						"http_status": result.get('http', {}).get('status', None),
 						"http_title": result.get('http', {}).get('title', None),
 						"http_server": result.get('http', {}).get('server', None),
-						"hostnames": json.dumps(result.get('hostnames', [])),
+						"hostnames": json.dumps(result.get('hostnames', {})),
 						"data": result.get('data', []),
 						"cpe23": json.dumps(result.get('cpe23', [])),
 						"info": result.get('info', None),
+						"scan_timestamp": timestamp,
 						"json_data": result,
 					}
 				)
