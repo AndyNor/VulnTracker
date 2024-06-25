@@ -104,9 +104,10 @@ class HaveIBeenPwnedBreaches(models.Model):
 
 class HaveIBeenPwnedBreachedAccounts(models.Model):
 	# Model to keep track of breached accounts.
-	email_address = models.CharField(max_length=100)
+	email_address = models.CharField(max_length=150)
 	breached_sites = models.TextField()
 	comment = models.TextField(default=None, null=True)
+	domain = models.CharField(max_length=150, null=True)
 
 
 class ExploitedVulnerability(models.Model):

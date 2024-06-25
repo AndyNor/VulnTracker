@@ -15,8 +15,20 @@ class VulnerabilityAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MachineReference)
-admin.site.register(HaveIBeenPwnedBreaches)
-admin.site.register(HaveIBeenPwnedBreachedAccounts)
+
+
+@admin.register(HaveIBeenPwnedBreaches)
+class HaveIBeenPwnedBreachesAdmin(admin.ModelAdmin):
+	list_display = ('name', 'title', 'domain', 'pwn_count', 'breach_date', 'added_date', 'modified_date')
+
+
+@admin.register(HaveIBeenPwnedBreachedAccounts)
+class HaveIBeenPwnedBreachedAccountsAdmin(admin.ModelAdmin):
+	list_display = ('email_address', 'breached_sites', 'comment',)
+	search_fields = ('email_address', 'breached_sites',)
+	list_filter = ('domain',)
+
+
 admin.site.register(ExploitedVulnerability)
 admin.site.register(Software)
 admin.site.register(SoftwareHosts)

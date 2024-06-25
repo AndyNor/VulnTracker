@@ -400,14 +400,16 @@ def haveibeenpwned_breaches(request):
 	"""
 	Fetches all unique breaches and shows them in a view.
 	"""
-	sort_by = request.GET.get('sort', 'pwn_count_desc')
+	#sort_by = request.GET.get('sort', 'pwn_count_desc')
 	filter_year = request.GET.get('filter_year', None)
 
 	# Get unique years from breach dates
-	years = HaveIBeenPwnedBreaches.objects.annotate(year=ExtractYear('breach_date')).values_list('year', flat=True).distinct().order_by('-year')
+	#years = HaveIBeenPwnedBreaches.objects.annotate(year=ExtractYear('breach_date')).values_list('year', flat=True).distinct().order_by('-year')
+
+	count_recent = 40
 
 	# Filter breaches based on the selected year
-	breaches = HaveIBeenPwnedBreaches.objects.all().order_by("-breach_date")
+	breaches = HaveIBeenPwnedBreaches.objects.all().order_by("-added_date")[0:count_recent]
 	#if filter_year:
 	#	breaches = breaches.filter(breach_date__year=filter_year)
 
@@ -425,7 +427,10 @@ def haveibeenpwned_breaches(request):
 	for breach in breaches_list:
 		breached_users = get_users_for_breach(breach)
 		breach.breached_users = breached_users
-		breach.breached_users_count = len(breached_users)  # Store count for sorting
+
+		breached_users_osloskolen = get_users_for_breach_osloskolen(breach)
+		breach.breached_users_osloskolen = breached_users_osloskolen
+		#breach.breached_users_count = len(breached_users)  # Store count for sorting
 
 	# Sort by breached_users_count if required
 	#if sort_by in ['breached_users_desc', 'breached_users_asc']:
@@ -433,9 +438,10 @@ def haveibeenpwned_breaches(request):
 
 	context = {
 		'breaches': breaches_list,  # Use the sorted list
-		'current_sort': sort_by,
-		'years': years,
-		'current_filter_year': filter_year,
+		'count_recent': count_recent,
+		#'current_sort': sort_by,
+		#'years': years,
+		#'current_filter_year': filter_year,
 		'scan_status': fetch_scan_info(),
 	}
 	return render(request, 'haveibeenpwned.html', context)
@@ -446,7 +452,19 @@ def get_users_for_breach(breach):
 	Fetches all breached users for a haveibeenpwned breach.
 	Helper function for haveibeenpwned_breaches
 	"""
-	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name)
+	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(~Q(domain="osloskolen.no"))
+	users = []
+	for account in breached_accounts:
+		users.append(account.email_address)
+	return users
+
+
+def get_users_for_breach_osloskolen(breach):
+	"""
+	Fetches all breached users for a haveibeenpwned breach.
+	Helper function for haveibeenpwned_breaches
+	"""
+	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(Q(domain="osloskolen.no"))
 	users = []
 	for account in breached_accounts:
 		users.append(account.email_address)
