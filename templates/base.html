@@ -25,9 +25,30 @@
 			</nav>
 		</div>
 
+		<!-- Scan Status Section -->
+		{% if scan_status %}
+		<div class="scan-status-container">
+			{% for latest_scan in scan_status %}
+				<div class="scan-status">
+					<div class="scan-header">
+						<h2 class="status-title">{{ latest_scan.scan_type }}</h2>
+						<p class="time-ago">{{ latest_scan.completed_at|timesince }} ago</p>
+					</div>
+					<p class="status-info">Status:
+						{% if latest_scan.status == "success" %}
+							<span class="status-icon status-success"></span> Completed
+						{% else %}
+							<span class="status-icon status-error"></span> Error
+						{% endif %}
+					</p>
+				</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+
+
 		<div class="dashboard-container">
 			{% block content %}
-
 			{% endblock %}
 		</div>
 

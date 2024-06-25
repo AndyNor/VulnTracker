@@ -20,7 +20,7 @@ from vulnapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('', views.cve, name='home'),
     path('cve/', views.cve, name='cve'),
     path('cve/keywords/', views.keyword_view, name='keywords'),
     path('cve/blacklist/', views.blacklist_view, name='blacklist'),

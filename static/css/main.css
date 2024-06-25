@@ -53,7 +53,7 @@ body, html {
 .main-content {
     flex-grow: 1;
     background: #ECEFF1;
-    padding: 20px;
+    padding: 0px;
     width: 100%;
 }
 
@@ -217,7 +217,7 @@ body, html {
     overflow-x: auto; /* Allows horizontal scrolling */
     justify-content: center; /* Center items along the main axis */
     align-items: center; /* Center items along the cross axis */
-    padding: 5px;
+    padding: 15px;
 }
 
 /* Individual scan status box */

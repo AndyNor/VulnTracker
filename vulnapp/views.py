@@ -87,7 +87,7 @@ def cve(request):
 		'current_sort': sort_by,
 		'current_order': order,
 		'current_date_filter': date_filter,
-		'scan_status': fetch_scan_info()
+		'scan_status': fetch_scan_info(),
 	})
 
 def fetch_scan_info():
@@ -436,6 +436,7 @@ def haveibeenpwned_breaches(request):
 		'current_sort': sort_by,
 		'years': years,
 		'current_filter_year': filter_year,
+		'scan_status': fetch_scan_info(),
 	}
 	return render(request, 'haveibeenpwned.html', context)
 
@@ -832,6 +833,7 @@ def shodan_results(request):
 	context = {
 		'results': results,
 		'stats': stats,
+		'scan_status': fetch_scan_info(),
 	}
 
 	return render(request, 'shodan_results.html', context)
