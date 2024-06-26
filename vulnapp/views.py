@@ -34,61 +34,21 @@ def cve(request):
 	This page displays the CVE information from NVD as well as scan status.
 	"""
 
-	# Get current time
-	now = timezone.now()
-	# Retrieve sorting parameters from the GET request
-	sort_by = request.GET.get('sort_by', 'cvss_score_desc')  # Default to 'cvss_score_desc'
-	order = request.GET.get('order', 'desc')
+	cvss_limit = 6.5
+	start_date = timezone.now() - datetime.timedelta(days=1)
+	cves = CVE.objects.filter(published_date__gte=start_date).filter(cvss_score__gte=cvss_limit).order_by('-cvss_score')
 
-	# Retrieve date filter parameter from the GET request
-	date_filter = request.GET.get('date_filter', 'past_day')
-	keywords_only = request.GET.get('keywords', 'false') == 'true'
-
-
-	# Start with all CVEs
-	cves = CVE.objects.all()
-
-	# Apply date filter
-	if date_filter == 'past_day':
-		start_date = now - datetime.timedelta(days=1)
-		cves = cves.filter(published_date__gte=start_date)
-	elif date_filter == 'past_week':
-		start_date = now - datetime.timedelta(days=7)
-		cves = cves.filter(published_date__gte=start_date)
-	elif date_filter == 'past_weekend':
-		weekend_start = now - datetime.timedelta(days=now.weekday() + 2)  # Get the last Friday
-		weekend_end = weekend_start + datetime.timedelta(days=2)  # Weekend is Friday to Sunday
-		cves = cves.filter(published_date__range=(weekend_start, weekend_end))
-	elif date_filter == 'this_month':
-		start_date = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-		cves = cves.filter(published_date__gte=start_date)
-
-	# Apply keyword filter if exists
-	keyword_filter = request.GET.get('keyword', '')
-	if keyword_filter:
-		cves = cves.filter(keywords__icontains=keyword_filter)
 
 	# Filter to show only CVEs with keywords
-	if keywords_only:
-		cves = cves.exclude(keywords='')
-
-	# Apply sorting
-	if sort_by == 'cvss_score_desc':
-		cves = cves.order_by('-cvss_score')
-	elif sort_by == 'cvss_score_asc':
-		cves = cves.order_by('cvss_score')
-	elif sort_by == 'date_desc':
-		cves = cves.order_by('-published_date')
-	elif sort_by == 'date_asc':
-		cves = cves.order_by('published_date')
+	#if keywords_only:
+	#	cves = cves.exclude(keywords='')
 
 	return render(request, 'cve.html', {
 		'cves': cves,
-		'current_sort': sort_by,
-		'current_order': order,
-		'current_date_filter': date_filter,
+		'cvss_limit': cvss_limit,
 		'scan_status': fetch_scan_info(),
 	})
+
 
 def fetch_scan_info():
 	"""
@@ -117,7 +77,7 @@ def keyword_view(request):
 			upload_form = KeywordUploadForm()  # Initialize an empty form for rendering
 			if keyword_form.is_valid():
 				keyword_form.save()
-				return redirect('keywords')
+				return redirect('cve_keywords')
 		elif 'upload_csv' in request.POST:
 			keyword_form = KeywordForm()  # Initialize an empty form for rendering
 			upload_form = KeywordUploadForm(request.POST, request.FILES)
@@ -127,7 +87,7 @@ def keyword_view(request):
 				print(content)
 				for item in content:
 					keyword, created = Keyword.objects.get_or_create(word=item.strip())  # Assuming a list of strings
-				return redirect('keywords')
+				return redirect('cve_keywords')
 	else:
 		keyword_form = KeywordForm()
 		upload_form = KeywordUploadForm()
@@ -888,3 +848,21 @@ def add_comment(request):
 
 	print(f"Comment {'created' if created else 'updated'}: {comment}")
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def push_pushover(message):
+	import os, requests
+	import http.client
+	USER_KEY = os.environ['PUSHOVER_USER_KEY']
+	APP_TOKEN = os.environ['PUSHOVER_APP_TOKEN']
+	CONTEXT = os.environ['PUSHOVER_CONTEXT']
+	if USER_KEY != "" and APP_TOKEN != "":
+		try:
+			payload = {"message": f"{CONTEXT}: {message}", "user": USER_KEY, "token": APP_TOKEN}
+			r = requests.post('https://api.pushover.net/1/messages.json', data=payload, headers={'User-Agent': 'Python'})
+			conn = http.client.HTTPSConnection("api.pushover.net:443")
+			print(f"Varsel sendt via PushOver")
+		except Exception as e:
+			print(f"Error: Kan ikke sende til pushover grunnet {e}")
+		return
+	print(f"Pushover er ikke konfigurert")

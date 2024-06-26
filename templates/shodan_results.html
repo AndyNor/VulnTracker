@@ -10,63 +10,62 @@
 		<div class="filter-header">
 			<h1 style="text-align: center;">Shodan Scan Results</h1>
 			<p style="text-align: center;">Total IPs detected is {{ stats.total_ips }}. This page shows all IPs reported by Shodan within the last 14 days, sorted by the most recent discoveries.</p>
+		</div>
 	</div>
-</div>
 
 	{% if results %}
-	<table>
-	  <thead>
+	<table class="tablesorter">
+	<thead>
 		<tr>
-		  <th>First seen</th>
-		  <th>Date last scan</th>
-		  <th>IP Address</th>
-		  <th>Port</th>
-		  <th>Product</th>
-		  <th>HTTP title</th>
-		  <th>HTTP status</th>
-		  <th>Hostnames</th>
-		  <th>Vulnerabilities</th>
-		  <th width="33%">Comments</th>
+			<th>First seen</th>
+			<th>Date last scan</th>
+			<th>IP Address</th>
+			<th>Port</th>
+			<th>Product</th>
+			<th>HTTP title</th>
+			<th>HTTP status</th>
+			<th>Hostnames</th>
+			<th>Vulnerabilities</th>
+			<th width="33%">Comments</th>
 		</tr>
-	  </thead>
-	  <tbody>
+	</thead>
+	<tbody>
 	{% for result in results %}
-	<tr>
-		<td>{{ result.created_at|timesince }}</td>
-		<td>{{ result.scan_timestamp|timesince }}</td>
-		<td>{{ result.ip_address|default:"" }}</td>
-		<td>{{ result.port|default:"" }} {{ result.transport }}</td>
-		<td>{{ result.product|default:"" }} <br> {{ result.http_server|default:"" }}</td>
-		<td>{{ result.http_title|default:"" }}</td>
-		<td>{{ result.http_status|default:"" }} {{result.http_status_display}}</td>
-		<td>
-			{% for hostname in result.hostnames_list %}
-			{{hostname}}<br>
-			{% endfor %}
-		</td>
-		<td>
-			{{ result.vulns_count }}
-		</td>
-		<td>
-			<div class="comment-form">
-				<form action="{% url 'add_comment' %}" method="post">
-					{% csrf_token %}
-					<input type="hidden" name="result_id" value="{{ result.id }}">
-					<input type="hidden" name="comment_type" value="shodan">
-					<div class="comment-form-controls"> <!-- Flex container -->
-						<textarea style="height: 80px;" name="comment_content">{{ result.comment_content }}</textarea>
-						<button type="submit">Update</button>
-					</div>
-				</form>
-			</div>
-		</td>
-
-	</tr>
+		<tr>
+			<td>{{ result.created_at|date:"Ymd" }}<br>{{ result.created_at|timesince }}</td>
+			<td>{{ result.scan_timestamp|date:"Ymd" }}<br>{{ result.scan_timestamp|timesince }}</td>
+			<td>{{ result.ip_address|default:"" }}</td>
+			<td>{{ result.port|default:"" }} {{ result.transport }}</td>
+			<td>{{ result.product|default:"" }} <br> {{ result.http_server|default:"" }}</td>
+			<td>{{ result.http_title|default:"" }}</td>
+			<td>{{ result.http_status|default:"" }} {{result.http_status_display}}</td>
+			<td>
+				{% for hostname in result.hostnames_list %}
+				{{hostname}}<br>
+				{% endfor %}
+			</td>
+			<td>
+				{{ result.vulns_count }}
+			</td>
+			<td>
+				<div class="comment-form">
+					<form action="{% url 'add_comment' %}" method="post">
+						{% csrf_token %}
+						<input type="hidden" name="result_id" value="{{ result.id }}">
+						<input type="hidden" name="comment_type" value="shodan">
+						<div class="comment-form-controls"> <!-- Flex container -->
+							<textarea style="height: 80px;" name="comment_content">{{ result.comment_content }}</textarea>
+							<button type="submit">Update</button>
+						</div>
+					</form>
+				</div>
+			</td>
+		</tr>
 	{% endfor %}
-	  </tbody>
+	</tbody>
 	</table>
 	{% else %}
-	<p>No results found.</p>
+		<p>No results found.</p>
 	{% endif %}
 </main>
 

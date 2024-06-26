@@ -28,3 +28,7 @@ os.environ["NESSUS_API_SECRET_KEY"] = ""
 #fetch_shodan.py
 os.environ["SHODAN_API_SECRET"] = ""
 os.environ["SHODAN_SUBNET"] = ""
+
+#pushover
+os.environ['PUSHOVER_USER_KEY'] = ""
+os.environ['PUSHOVER_APP_TOKEN'] = ""
