@@ -33,18 +33,27 @@ def cve(request):
 	Index function to display the main page.
 	This page displays the CVE information from NVD as well as scan status.
 	"""
+	from django.db.models.functions import Trunc
+	from django.db.models import DateTimeField
 
 	cvss_limit = 6.5
-	start_date = timezone.now() - datetime.timedelta(days=1)
-	cves = CVE.objects.filter(published_date__gte=start_date).filter(cvss_score__gte=cvss_limit).order_by('-cvss_score')
+	number_days = 5
 
+	days = []
 
-	# Filter to show only CVEs with keywords
-	#if keywords_only:
-	#	cves = cves.exclude(keywords='')
+	for day in range(number_days):
+		start_date = timezone.now() - datetime.timedelta(days=day + 1)
+		end_date = timezone.now() - datetime.timedelta(days=day)
+		day_cves = CVE.objects.filter(published_date__gte=start_date)
+		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
+		day_cves = day_cves.exclude(keywords='')
+		day_cves = day_cves.order_by('-cvss_score')
+
+		days.append({"datetime": end_date, "cves": list(day_cves)})
 
 	return render(request, 'cve.html', {
-		'cves': cves,
+		'days': days,
+		'number_days': number_days,
 		'cvss_limit': cvss_limit,
 		'scan_status': fetch_scan_info(),
 	})
