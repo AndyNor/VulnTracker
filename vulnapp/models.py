@@ -19,9 +19,9 @@ class Blacklist(models.Model):
 
 class CVE(models.Model):
 	# Model to store individual CVE entries.
-	cve_id = models.CharField(max_length=50, unique=True)
+	cve_id = models.CharField(max_length=50, unique=True, db_index=True,)
 	source_identifier = models.CharField(max_length=100)
-	published_date = models.DateTimeField()
+	published_date = models.DateTimeField(db_index=True)
 	last_modified_date = models.DateTimeField()
 	vuln_status = models.CharField(max_length=50)
 	description = models.TextField()
@@ -32,7 +32,6 @@ class CVE(models.Model):
 	cwe = models.CharField(max_length=50, null=True, blank=True)
 	references = models.TextField()
 	known_exploited = models.BooleanField(default=False)
-
 
 	def __str__(self):
 		return self.cve_id

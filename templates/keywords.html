@@ -116,7 +116,7 @@
         <input type="submit" name="submit_keyword" value="Add Keyword">
     </form>
 
-    <h2>Upload Keywords CSV</h2>
+    <h2>Add Keywords as CSV</h2>
     <form method="post" enctype="multipart/form-data" class="form-keyword-upload">
         {% csrf_token %}
         {{ upload_form.as_p }}
@@ -134,7 +134,7 @@
         {% endfor %}
     </ul>
 </div>
-<script>
+<script nonce="{{request.csp_nonce}}">
 document.addEventListener('DOMContentLoaded', function() {
     var searchInput = document.getElementById('keyword-search');
     var keywordList = document.getElementById('keyword-list').getElementsByTagName('li');
