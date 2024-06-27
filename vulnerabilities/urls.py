@@ -22,6 +22,7 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('', views.cve, name='home'),
 	path('cve/', views.cve, name='cve'),
+	path('cve/without/', views.cve_without, name='cve_without'),
 	path('cve/keywords/', views.keyword_view, name='cve_keywords'),
 	path('cve/blacklist/', views.blacklist_view, name='blacklist'),
 	path('cve/delete/<str:model_name>/<int:word_id>/', views.delete_word, name='delete_word'),

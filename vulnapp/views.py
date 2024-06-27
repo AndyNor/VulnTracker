@@ -54,6 +54,35 @@ def cve(request):
 		'number_days': number_days,
 		'cvss_limit': cvss_limit,
 		'scan_status': fetch_scan_info(),
+		'heading': "cve",
+	})
+
+
+def cve_without(request):
+	"""
+	"""
+
+	cvss_limit = 5.0
+	number_days = 7
+	days = []
+
+	for day in range(number_days):
+		current_datetime = timezone.now() - datetime.timedelta(days=day)
+		current_date = current_datetime.date()
+
+		day_cves = CVE.objects.filter(published_date__date=current_date)
+		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
+		day_cves = day_cves.filter(keywords='')
+		day_cves = day_cves.order_by('-cvss_score')
+
+		days.append({"datetime": current_date, "cves": list(day_cves)})
+
+	return render(request, 'cve.html', {
+		'days': days,
+		'number_days': number_days,
+		'cvss_limit': cvss_limit,
+		'scan_status': fetch_scan_info(),
+		'heading': "cve_without",
 	})
 
 
