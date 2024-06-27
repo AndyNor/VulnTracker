@@ -57,6 +57,31 @@ def cve(request):
 	})
 
 
+def news(request):
+	"""
+	This page displays the news from feeds (rss/atom).
+	"""
+
+	number_days = 7
+	days = []
+
+	for day in range(number_days):
+		current_datetime = timezone.now() - datetime.timedelta(days=day)
+		current_date = current_datetime.date()
+
+		day_news = Feed.objects.filter(published__date=current_date)
+		#day_news = day_news.exclude(keywords='')
+		day_news = day_news.order_by('-published')
+
+		days.append({"datetime": current_date, "news": list(day_news)})
+
+	return render(request, 'news.html', {
+		'days': days,
+		'number_days': number_days,
+		'scan_status': fetch_scan_info(),
+	})
+
+
 def fetch_scan_info():
 	"""
 	Function to fetch scan status.

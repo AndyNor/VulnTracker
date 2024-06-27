@@ -58,6 +58,23 @@ class Vulnerability(models.Model):
 	def __str__(self):
 		return self.name
 
+
+
+class Feed(models.Model):
+	added_date = models.DateTimeField(auto_now_add=True)
+	url = models.TextField(unique=True)
+	title = models.TextField(null=True)
+	summary = models.TextField(null=True)
+	author = models.TextField(null=True)
+	published = models.DateTimeField(null=True)
+
+	def __str__(self):
+		return f"Feed: {self.title}"
+
+
+#['title', 'title_detail', 'summary', 'summary_detail', 'links', 'link', 'id', 'guidislink', 'published', 'published_parsed', 'authors', 'author', 'author_detail']
+
+
 class MachineReference(models.Model):
 	# Model to keep treack of individual vulnerabilities per host.
 	vulnerability = models.ForeignKey(Vulnerability, on_delete=models.CASCADE, related_name='machine_references')
