@@ -24,7 +24,8 @@ class Command(BaseCommand):
 			rss_sources = [
 				"https://feeds.feedburner.com/TheHackersNews",
 				"https://www.securityweek.com/feed/",
-				"https://telenorsoc-news.blogspot.com/feeds/posts/default",
+				"https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml",
+				#"https://telenorsoc-news.blogspot.com/feeds/posts/default",
 			]
 
 			for rss_source in rss_sources:
@@ -34,13 +35,14 @@ class Command(BaseCommand):
 						for entry in feed.entries:
 
 							published = timezone.make_aware(datetime.fromtimestamp(mktime(entry.published_parsed)), timezone=pytz.UTC)
+							author = entry.author_detail.name if hasattr(entry, "author_detail") else None
 
 							e, created = Feed.objects.update_or_create(
 								url=entry.id,
 								defaults={
 									'title': entry.title,
 									'summary': entry.summary,
-									'author': entry.author_detail.name,
+									'author': author,
 									'published': published,
 								}
 							)
@@ -49,7 +51,6 @@ class Command(BaseCommand):
 					print(f"Failed to read {rss_source}")
 
 
-			self.stdout.write(self.style.SUCCESS('Success'))
 			scan_status.status = 'success'
 			scan_status.save()
 
