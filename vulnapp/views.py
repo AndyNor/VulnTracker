@@ -849,8 +849,8 @@ def shodan_stale(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
-	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(scan_timestamp__lte=tidsgrense).order_by('-created_at')
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=14)
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__lt=tidsgrense) | Q(scan_timestamp__lt=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
@@ -870,6 +870,7 @@ def shodan_stale(request):
 	}
 
 	context = {
+		'stale': True,
 		'results': results,
 		'stats': stats,
 		'scan_status': fetch_scan_info(),
@@ -878,12 +879,12 @@ def shodan_stale(request):
 	return render(request, 'shodan_results.html', context)
 
 
-def shodan_results(request):
+def shodan(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(scan_timestamp__gte=tidsgrense).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__gte=tidsgrense) & Q(scan_timestamp__gte=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
@@ -903,6 +904,7 @@ def shodan_results(request):
 	}
 
 	context = {
+		'stale': False,
 		'results': results,
 		'stats': stats,
 		'scan_status': fetch_scan_info(),

@@ -8,8 +8,13 @@
 <main class="main-content">
 	<div class="filter-section">
 		<div class="filter-header">
-			<h1 style="text-align: center;">Shodan Scan Results</h1>
-			<p style="text-align: center;">Total IPs detected is {{ stats.total_ips }}. This page shows all IPs reported by Shodan within the last 14 days, sorted by the most recent discoveries. <a href="{% url 'shodan_stale' %}">Show old entries.</a></p>
+		{% if not stale %}
+			<h1 style="text-align: center;">Active Shodan Results</h1>
+			<p style="text-align: center;">Total IPs detected is {{ stats.total_ips }}. This page shows all IPs reported by and scanned by Shodan within the last 14 days, sorted by the most recent discoveries. <a href="{% url 'shodan_stale' %}">Show old entries.</a></p>
+		{% else %}
+			<h1 style="text-align: center;">Old Shodan Results</h1>
+			<p style="text-align: center;">Total IPs detected is {{ stats.total_ips }}. This page shows all stale IPs reported by Shodan. <a href="{% url 'shodan' %}">Show new entries.</a></p>
+		{% endif %}
 		</div>
 	</div>
 

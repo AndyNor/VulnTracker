@@ -59,7 +59,7 @@ urlpatterns = [
 	path('nessus/host/<str:hostname>/', views.nessus_host_details, name='nessus_host_details'),
 
 
-	path('shodan', views.shodan_results, name='shodan'),
+	path('shodan', views.shodan, name='shodan'),
 	path('shodan/stale/', views.shodan_stale, name='shodan_stale'),
 	path('add_comment/', views.add_comment, name='add_comment'),
 
