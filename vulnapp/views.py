@@ -526,7 +526,7 @@ def breached_users_list(request, breach_name):
 	Fetches all breached users for a specific breach and shows them to the user in the template.
 	"""
 
-	display_filter = request.GET.get("filter", "oslofelles")
+	display_filter = request.GET.get("filter", "")
 
 	breach = get_object_or_404(HaveIBeenPwnedBreaches, name=breach_name)
 	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name)
