@@ -20,7 +20,9 @@ class Command(BaseCommand):
 		try:
 			url = os.environ["KARTOTEKET_SOFTWARE"]
 			headers = None
+			print(f"Kobler til {url}")
 			connection = requests.get(url, headers=headers)
+			print(f"Status code: {connection.status_code}")
 			if connection.status_code == 200:
 
 				data = json.loads(connection.text)
