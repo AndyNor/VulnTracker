@@ -30,12 +30,12 @@
 					</div>
 					{% if breach.breached_users %}
 					<div class="cve-tag cve-criticality Critical">
-						<a style="text-decoration: none; color: white" href="{% url 'breached_users_list' breach.name %}">Oslofelles: {{ breach.breached_users|length }}</a>
+						<a style="text-decoration: none; color: white" href="{% url 'breached_users_list' breach.name %}?filter=oslofelles">Oslofelles: {{ breach.breached_users|length }}</a>
 					</div>
 					{% endif %}
 					{% if breach.breached_users_osloskolen %}
 					<div class="cve-tag cve-criticality Medium">
-						<a style="text-decoration: none; color: white" href="{% url 'breached_users_list' breach.name %}">Osloskolen: {{ breach.breached_users_osloskolen|length }}</a>
+						<a style="text-decoration: none; color: white" href="{% url 'breached_users_list' breach.name %}?filter=osloskolen">Osloskolen: {{ breach.breached_users_osloskolen|length }}</a>
 					</div>
 					{% endif %}
 				</div>

@@ -525,9 +525,18 @@ def breached_users_list(request, breach_name):
 	"""
 	Fetches all breached users for a specific breach and shows them to the user in the template.
 	"""
+
+	display_filter = request.GET.get("filter", "oslofelles")
+
 	breach = get_object_or_404(HaveIBeenPwnedBreaches, name=breach_name)
 	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name)
-	users = [account.email_address for account in breached_accounts]
+
+	if display_filter == "oslofelles":
+		users = [account.email_address for account in breached_accounts if "osloskolen.no" not in account.email_address]
+	elif display_filter == "osloskolen":
+		users = [account.email_address for account in breached_accounts if "osloskolen.no" in account.email_address]
+	else:
+		users = [account.email_address for account in breached_accounts]
 
 	# Map visual names to full domains
 	section_map = {}
