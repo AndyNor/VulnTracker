@@ -847,9 +847,10 @@ def all_software_hosts(request):
 
 def shodan_stale(request):
 	"""
-	Shows all of the results from Shodan, with filters and sorting to structure the data.
+	Shows all of the stale results from Shodan, with filters and sorting to structure the data.
 	"""
-	tidsgrense = datetime.date.today() - datetime.timedelta(days=14)
+	recent_days = 14
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=recent_days)
 	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__lt=tidsgrense) | Q(scan_timestamp__lt=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
@@ -870,6 +871,7 @@ def shodan_stale(request):
 	}
 
 	context = {
+		'recent_days': recent_days,
 		'stale': True,
 		'results': results,
 		'stats': stats,
@@ -883,7 +885,8 @@ def shodan(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
-	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
+	recent_days = 14
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=recent_days)
 	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__gte=tidsgrense) & Q(scan_timestamp__gte=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
@@ -904,6 +907,7 @@ def shodan(request):
 	}
 
 	context = {
+		'recent_days': recent_days,
 		'stale': False,
 		'results': results,
 		'stats': stats,
