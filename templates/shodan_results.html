@@ -23,6 +23,7 @@
 	<thead>
 		<tr>
 			<th>First seen</th>
+			<th>Last seen</th>
 			<th>Date last scan</th>
 			<th>IP Address</th>
 			<th>Port</th>
@@ -38,6 +39,7 @@
 	{% for result in results %}
 		<tr>
 			<td>{{ result.created_at|date:"Ymd" }}<br>{{ result.created_at|timesince }}</td>
+			<td>{{ result.updated_at|date:"Ymd" }}<br>{{ result.updated_at|timesince }}</td>
 			<td>{{ result.scan_timestamp|date:"Ymd" }}<br>{{ result.scan_timestamp|timesince }}</td>
 			<td>{{ result.ip_address|default:"" }}</td>
 			<td>{{ result.port|default:"" }} {{ result.transport }}</td>
