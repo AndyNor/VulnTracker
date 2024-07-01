@@ -21,7 +21,7 @@ class Command(BaseCommand):
 			url = os.environ["KARTOTEKET_SOFTWARE"]
 			headers = None
 			print(f"Kobler til {url}")
-			connection = requests.get(url, headers=headers)
+			connection = requests.get(url, headers=headers, timeout=1)
 			print(f"Status code: {connection.status_code}")
 			if connection.status_code == 200:
 
