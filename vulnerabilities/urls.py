@@ -60,7 +60,7 @@ urlpatterns = [
 
 
 	path('shodan', views.shodan_results, name='shodan'),
-	path('shodan/stale/', views.shodan_results_stale, name='shodan_stale'),
+	path('shodan/stale/', views.shodan_stale, name='shodan_stale'),
 	path('add_comment/', views.add_comment, name='add_comment'),
 
 

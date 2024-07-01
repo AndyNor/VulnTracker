@@ -845,7 +845,7 @@ def all_software_hosts(request):
 # SOFTWARE SECTION END
 
 
-def shodan_results_stale(request):
+def shodan_stale(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
