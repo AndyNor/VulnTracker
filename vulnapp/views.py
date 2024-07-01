@@ -824,12 +824,45 @@ def all_software_hosts(request):
 # SOFTWARE SECTION END
 
 
+def shodan_results_stale(request):
+	"""
+	Shows all of the results from Shodan, with filters and sorting to structure the data.
+	"""
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(timestamp__lte=tidsgrense).order_by('-created_at')
+
+	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
+	for result in results:
+		data = result.json_data
+		if data == None:
+			continue
+		# Attempt to fetch the comment for this result
+		comments = Comment.objects.filter(
+			content_type=shodan_content_type,
+			object_id=result.id
+		)
+		comment_content = comments[0].content if comments else ""  # Use the first comment's content if exists
+		result.comment_content = comment_content
+
+	stats = {
+		'total_ips': results.count(),
+	}
+
+	context = {
+		'results': results,
+		'stats': stats,
+		'scan_status': fetch_scan_info(),
+	}
+
+	return render(request, 'shodan_results.html', context)
+
+
 def shodan_results(request):
 	"""
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
-	tidsgrense = datetime.date.today() - datetime.timedelta(days=14)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(updated_at__gte=tidsgrense).order_by('-created_at')
+	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(timestamp__gte=tidsgrense).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
