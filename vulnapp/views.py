@@ -428,7 +428,7 @@ def haveibeenpwned_breaches(request):
 	Fetches all unique breaches and shows them in a view.
 	"""
 	#sort_by = request.GET.get('sort', 'pwn_count_desc')
-	filter_year = request.GET.get('filter_year', None)
+	#filter_year = request.GET.get('filter_year', None)
 
 	# Get unique years from breach dates
 	#years = HaveIBeenPwnedBreaches.objects.annotate(year=ExtractYear('breach_date')).values_list('year', flat=True).distinct().order_by('-year')

@@ -20,6 +20,14 @@ admin.site.register(MachineReference)
 @admin.register(HaveIBeenPwnedBreaches)
 class HaveIBeenPwnedBreachesAdmin(admin.ModelAdmin):
 	list_display = ('name', 'title', 'domain', 'pwn_count', 'breach_date', 'added_date', 'modified_date')
+	search_fields = ('name', 'title',)
+
+
+@admin.register(HaveIBeenPwnedBreachedAccounts)
+class HHaveIBeenPwnedBreachedAccountsAdmin(admin.ModelAdmin):
+	list_display = ('email_address', 'breached_sites', 'domain', 'comment',)
+	search_fields = ('email_address', 'breached_sites', 'domain',)
+	list_filter = ('comment',)
 
 
 @admin.register(Feed)
@@ -28,12 +36,6 @@ class FeedAdmin(admin.ModelAdmin):
 	search_fields = ('title', 'summary',)
 	list_filter = ('author',)
 
-
-@admin.register(HaveIBeenPwnedBreachedAccounts)
-class HaveIBeenPwnedBreachedAccountsAdmin(admin.ModelAdmin):
-	list_display = ('email_address', 'breached_sites', 'comment',)
-	search_fields = ('email_address', 'breached_sites',)
-	list_filter = ('domain',)
 
 
 admin.site.register(ExploitedVulnerability)
