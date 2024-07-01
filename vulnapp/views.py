@@ -49,12 +49,15 @@ def cve(request):
 
 		days.append({"datetime": current_date, "cves": list(day_cves)})
 
+	mark_words = list(Keyword.objects.all().values_list('word', flat=True))
+
 	return render(request, 'cve.html', {
 		'days': days,
 		'number_days': number_days,
 		'cvss_limit': cvss_limit,
 		'scan_status': fetch_scan_info(),
 		'heading': "cve",
+		'mark_words': mark_words,
 	})
 
 
@@ -104,7 +107,10 @@ def news(request):
 
 		days.append({"datetime": current_date, "news": list(day_news)})
 
+	mark_words = list(Keyword.objects.all().values_list('word', flat=True))
+
 	return render(request, 'news.html', {
+		'mark_words': mark_words,
 		'days': days,
 		'number_days': number_days,
 		'scan_status': fetch_scan_info(),

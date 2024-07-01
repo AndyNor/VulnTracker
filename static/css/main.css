@@ -294,3 +294,12 @@ body, html {
     border-radius: 4px;
     cursor: pointer;
 }
+
+mark {
+    background-color: #e8eb34b0;
+}
+
+caption button{
+    margin: 10px;
+    padding: 5px;
+}

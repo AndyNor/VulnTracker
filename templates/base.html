@@ -60,8 +60,31 @@
 	<script src="{% static 'js/base.js' %}"></script>
 	<script src="{% static 'js/jquery.tablesorter.widgets.min.js' %}"></script>
 	<script src="{% static 'js/parser-network.min.js' %}"></script>
+	<script src="{% static 'js/jquery.mark.min.js' %}"></script>
+	<script src="{% static 'js/tableexport/xlsx.core.min.js' %}"></script>
+	<script src="{% static 'js/tableexport/FileSaver.min.js' %}"></script>
+	<script src="{% static 'js/tableexport/tableexport.js' %}"></script>
 
 	<script type="text/javascript" nonce="{{request.csp_nonce}}">
+	$(document).ready(function(){
+
+		// tableexport must be loaded before tablesorter
+		TableExport.prototype.types.date.assert = function(value){
+			return false;
+		};
+		$(".excel").tableExport({
+			headers: true,
+			footers: true,
+			formats: ["xlsx",],
+			filename: 'id',
+			bootstrap: false,
+			position: "top",
+			exportButtons: true,
+			ignoreRows: null,
+			ignoreCols: null,
+			trimWhitespace: true,
+		});
+
 		$(".tablesorter").tablesorter({
 			theme: 'default',
 			widgets : ["filter",],
@@ -74,6 +97,18 @@
 				filter_startsWith : false,
 			}
 		})
+
+		{% if mark_words %}
+		$(".main-content").mark(
+				{{mark_words|safe}},
+				options = {
+					"accuracy": "exactly",
+					"separateWordSearch": false
+				}
+			);
+		{% endif %}
+
+	})
 	</script>
 
 
