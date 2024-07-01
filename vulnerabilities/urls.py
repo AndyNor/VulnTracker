@@ -34,6 +34,21 @@ urlpatterns = [
 	path('haveibeenpwned/<str:breach_name>/', views.breached_users_list, name='breached_users_list'),
 	path('haveibeenpwned/user/<str:email>/', views.get_breaches_for_user, name='get_breaches_for_user'),
 
+	path('cve/without/', views.cve_without, name='cve_without'),
+	path('cve/keywords/', views.keyword_view, name='cve_keywords'),
+	path('cve/blacklist/', views.blacklist_view, name='blacklist'),
+	path('cve/delete/<str:model_name>/<int:word_id>/', views.delete_word, name='delete_word'),
+
+	path('news/', views.news, name='news'),
+
+	path('defender/vulnerabilities', views.defender_vulnerabilities, name='defender_vulnerabilities'),
+	path('defender/vulnerabilities/<str:cve_id>/machines/', views.machine_list, name='machine-list'),
+	path('defender/machines/<str:computer_dns_name>/cves/', views.cve_list_for_machine, name='cve-list-for-machine'),
+
+	path('haveibeenpwned', views.haveibeenpwned_breaches, name='haveibeenpwned'),
+	path('haveibeenpwned/<str:breach_name>/', views.breached_users_list, name='breached_users_list'),
+	path('haveibeenpwned/user/<str:email>/', views.get_breaches_for_user, name='get_breaches_for_user'),
+
 	path('software_list/', views.software_list, name='software_list'),
 	path('software_list/server', views.all_software_hosts, name='software_list_server'),
 	path('software_list/software/<path:software_id>/', views.software_list_by_software, name='host_list_by_software'),

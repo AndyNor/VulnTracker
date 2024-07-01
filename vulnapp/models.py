@@ -19,9 +19,9 @@ class Blacklist(models.Model):
 
 class CVE(models.Model):
 	# Model to store individual CVE entries.
-	cve_id = models.CharField(max_length=50, unique=True)
+	cve_id = models.CharField(max_length=50, unique=True, db_index=True,)
 	source_identifier = models.CharField(max_length=100)
-	published_date = models.DateTimeField()
+	published_date = models.DateTimeField(db_index=True)
 	last_modified_date = models.DateTimeField()
 	vuln_status = models.CharField(max_length=50)
 	description = models.TextField()
@@ -32,7 +32,6 @@ class CVE(models.Model):
 	cwe = models.CharField(max_length=50, null=True, blank=True)
 	references = models.TextField()
 	known_exploited = models.BooleanField(default=False)
-
 
 	def __str__(self):
 		return self.cve_id
@@ -58,6 +57,23 @@ class Vulnerability(models.Model):
 
 	def __str__(self):
 		return self.name
+
+
+
+class Feed(models.Model):
+	added_date = models.DateTimeField(auto_now_add=True)
+	url = models.TextField(unique=True)
+	title = models.TextField(null=True)
+	summary = models.TextField(null=True)
+	author = models.TextField(null=True)
+	published = models.DateTimeField(null=True)
+
+	def __str__(self):
+		return f"Feed: {self.title}"
+
+
+#['title', 'title_detail', 'summary', 'summary_detail', 'links', 'link', 'id', 'guidislink', 'published', 'published_parsed', 'authors', 'author', 'author_detail']
+
 
 class MachineReference(models.Model):
 	# Model to keep treack of individual vulnerabilities per host.

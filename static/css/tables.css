@@ -10,6 +10,16 @@ table {
   background: #fff;
 }
 
+.tablesorter-default {
+  font: inherit;
+}
+
+.tablesorter-default th {
+  background-color: #3489eb;
+  color: white;
+  font-weight: normal;
+}
+
 /* Header styles */
 th {
   background-color: #3489eb; /* A modern, vibrant color */

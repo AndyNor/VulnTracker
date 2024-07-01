@@ -22,6 +22,13 @@ class HaveIBeenPwnedBreachesAdmin(admin.ModelAdmin):
 	list_display = ('name', 'title', 'domain', 'pwn_count', 'breach_date', 'added_date', 'modified_date')
 
 
+@admin.register(Feed)
+class FeedAdmin(admin.ModelAdmin):
+	list_display = ('url', 'title', 'author', 'published')
+	search_fields = ('title', 'summary',)
+	list_filter = ('author',)
+
+
 @admin.register(HaveIBeenPwnedBreachedAccounts)
 class HaveIBeenPwnedBreachedAccountsAdmin(admin.ModelAdmin):
 	list_display = ('email_address', 'breached_sites', 'comment',)

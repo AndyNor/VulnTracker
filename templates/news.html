@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/filters.css' %}">
+<link rel="stylesheet" href="{% static 'css/cve_table.css' %}">
+<main class="main-content" style="width:100%">
+
+	<div class="filter-section">
+		<div class="filter-header">
+			<h2>News from feeds (RSS/Atom)</h2>
+			<p style="text-align: center;">text</p>
+		</div>
+	</div>
+
+
+		{% for day in days %}
+			<h2>{{ day.datetime|date:"d. F" }}</h2>
+			<section class="vulnerabilities-list" id="latest">
+			{% for article in day.news %}
+				<article class="cve">
+					 <div class="cve-header">
+						<h3 class="cve-title"><a style="text-decoration: none; color: black;" target="_blank" href="{{ article.url }}">{{ article.title }}</a></h3>
+					</div>
+					<!-- Check the length of the description and truncate if necessary -->
+					<p class="cve-description">
+						{{ article.summary|safe }}
+					</p>
+					<div class="cve-details">
+						<span>Published: {{ article.published|date:"H:m" }}</span>
+					</div>
+					{% if article.keywords %}
+						<div class="cve-keywords">
+							{{ article.keywords }}
+						</div>
+					{% endif %}
+				</article>
+			{% empty %}
+				<p>No news found.</p>
+			{% endfor %}
+			</section>
+		{% endfor %}
+
+</main>
+
+{% endblock %}
+
+
+
+

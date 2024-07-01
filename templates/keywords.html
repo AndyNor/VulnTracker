@@ -106,15 +106,7 @@
     font-size: 14px; /* Adjust font size as needed */
 }
 </style>
-    <aside class="sidebar">
-        <h1 class="logo">CVE-oversikt</h1>
-        <nav class="nav">
-            <ul>
-                <li><a href="{% url 'keywords' %}">Keywords</a></li>
-                <li><a href="{% url 'blacklist' %}">Blacklist</a></li>
-            </ul>
-        </nav>
-    </aside>
+
 
 <div class="keyword-section">
     <h2>Add a Keyword</h2>
@@ -124,7 +116,7 @@
         <input type="submit" name="submit_keyword" value="Add Keyword">
     </form>
 
-    <h2>Upload Keywords CSV</h2>
+    <h2>Add Keywords as CSV</h2>
     <form method="post" enctype="multipart/form-data" class="form-keyword-upload">
         {% csrf_token %}
         {{ upload_form.as_p }}
@@ -142,7 +134,7 @@
         {% endfor %}
     </ul>
 </div>
-<script>
+<script nonce="{{request.csp_nonce}}">
 document.addEventListener('DOMContentLoaded', function() {
     var searchInput = document.getElementById('keyword-search');
     var keywordList = document.getElementById('keyword-list').getElementsByTagName('li');

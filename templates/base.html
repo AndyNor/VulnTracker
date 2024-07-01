@@ -5,6 +5,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Sårbarhetsoversikten Oslo kommune</title>
+		<link rel="stylesheet" href="{% static 'css/tablesorter/filter.formatter.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/tablesorter/theme.default.min.css' %}">
 		<link rel="stylesheet" href="{% static 'css/main.css' %}">
 		<link rel="stylesheet" href="{% static 'css/tables.css' %}">
 	</head>
@@ -16,6 +18,7 @@
 			<nav class="top-nav-menu">
 				<ul>
 					<li><a href="{% url 'cve' %}">CVEs</a></li>
+					<li><a href="{% url 'news' %}">News</a></li>
 					<li><a href="{% url 'shodan' %}">Shodan</a></li>
 					<li><a href="{% url 'haveibeenpwned' %}">HaveIBeenPwned</a></li>
 					<li><a href="{% url 'defender_vulnerabilities' %}">Defender Vulnerabilities</a></li>
@@ -52,7 +55,28 @@
 			{% endblock %}
 		</div>
 
+	<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+	<script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 	<script src="{% static 'js/base.js' %}"></script>
+	<script src="{% static 'js/jquery.tablesorter.widgets.min.js' %}"></script>
+	<script src="{% static 'js/parser-network.min.js' %}"></script>
+
+	<script type="text/javascript" nonce="{{request.csp_nonce}}">
+		$(".tablesorter").tablesorter({
+			theme: 'default',
+			widgets : ["filter",],
+			widgetOptions : {
+				filter_liveSearch : true,
+				filter_searchFiltered: true,
+				filter_placeholder: { search : '' },
+				filter_columnFilters: true,
+				filter_ignoreCase : true,
+				filter_startsWith : false,
+			}
+		})
+	</script>
+
+
 
 	</body>
 </html>
