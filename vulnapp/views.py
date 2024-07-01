@@ -850,7 +850,7 @@ def shodan_results_stale(request):
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(timestamp__lte=tidsgrense).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(scan_timestamp__lte=tidsgrense).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
@@ -883,7 +883,7 @@ def shodan_results(request):
 	Shows all of the results from Shodan, with filters and sorting to structure the data.
 	"""
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=21)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(timestamp__gte=tidsgrense).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(scan_timestamp__gte=tidsgrense).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
