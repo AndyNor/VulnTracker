@@ -479,7 +479,7 @@ def get_users_for_breach(breach):
 	Fetches all breached users for a haveibeenpwned breach.
 	Helper function for haveibeenpwned_breaches
 	"""
-	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(~Q(domain="osloskolen.no"))
+	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(~Q(email_address__icontains="osloskolen.no"))
 	users = []
 	for account in breached_accounts:
 		users.append(account.email_address)
@@ -491,7 +491,7 @@ def get_users_for_breach_osloskolen(breach):
 	Fetches all breached users for a haveibeenpwned breach.
 	Helper function for haveibeenpwned_breaches
 	"""
-	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(Q(domain="osloskolen.no"))
+	breached_accounts = HaveIBeenPwnedBreachedAccounts.objects.filter(breached_sites__contains=breach.name).filter(Q(email_address__icontains="osloskolen.no"))
 	users = []
 	for account in breached_accounts:
 		users.append(account.email_address)
