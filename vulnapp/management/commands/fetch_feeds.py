@@ -25,6 +25,8 @@ class Command(BaseCommand):
 				"https://feeds.feedburner.com/TheHackersNews",
 				"https://www.securityweek.com/feed/",
 				"https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml",
+				"https://www.digi.no/rss",
+				"https://www.bleepingcomputer.com/feed/",
 				#"https://telenorsoc-news.blogspot.com/feeds/posts/default",
 			]
 
