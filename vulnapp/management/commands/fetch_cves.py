@@ -7,6 +7,7 @@ import pytz
 import re
 from vulnapp.models import CVE, Keyword, ScanStatus, Software, Blacklist
 import spacy
+import os
 
 unique_software = []
 
@@ -23,7 +24,8 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		self.base_url = "https://services.nvd.nist.gov/rest/json/cves/2.0/"
 		self.headers = {
-			'User-Agent': 'CVEFetcher/1.0'
+			'User-Agent': 'Oslo kommune',
+			'apiKey': os.environ['NIST_CVE_APIKEY'],
 		}
 
 		scan_type = "NIST CVEs"
@@ -39,8 +41,8 @@ class Command(BaseCommand):
 			elif period == 'past_month':
 				cve_data = self.fetch_cves_past_month()
 			else:
-				self.stdout.write(self.style.ERROR('Invalid period specified. Use one of: past_day, past_week, past_month'))
-				return
+				self.stdout.write(self.style.ERROR('No period specified. Using past_week'))
+				cve_data = self.fetch_cves_past_week()
 
 			if cve_data:
 				self.save_cve_data(cve_data, scan_status)  # Corrected to pass scan_status
@@ -70,10 +72,12 @@ class Command(BaseCommand):
 			'pubStartDate': f'{date_start}T00:00:00.000',
 			'pubEndDate': f'{date_end}T23:59:59.000'
 		}
-		print(f"Using parameters {params}")
 
+		print(f"Connecting to {self.base_url} with {self.headers}")
+		print(f"Using parameters {params}")
 		try:
-			response = session.get(self.base_url, headers=self.headers, params=params, timeout=60, stream=True)
+			response = session.get(self.base_url, headers=self.headers, params=params, timeout=120, stream=True)
+			print(f"Getting {response.status_code} from service..")
 			if response.status_code == 200:
 				data = []
 				for chunk in response.iter_content(chunk_size=8192):
