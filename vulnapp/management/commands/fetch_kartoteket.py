@@ -25,11 +25,9 @@ class Command(BaseCommand):
 			print(f"Status code: {connection.status_code}")
 			if connection.status_code == 200:
 
-				print(type(connection.text))
-				data = json.loads(connection.text)
 				Keyword.objects.all().delete()
-				print(data)
-				print(type(data))
+				print(connection.text)
+				data = json.loads(connection.text)
 				for word in data:
 					#print(word)
 					Keyword.objects.get_or_create(word=word.strip())  # Assuming a list of strings
