@@ -25,6 +25,7 @@ class Command(BaseCommand):
 			print(f"Status code: {connection.status_code}")
 			if connection.status_code == 200:
 
+				print(type(connection.text))
 				data = json.loads(connection.text)
 				Keyword.objects.all().delete()
 				print(data)
