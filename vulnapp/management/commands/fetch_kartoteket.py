@@ -27,8 +27,9 @@ class Command(BaseCommand):
 
 				data = json.loads(connection.text)
 				Keyword.objects.all().delete()
+				print(data)
 				for word in data:
-					print(word)
+					#print(word)
 					Keyword.objects.get_or_create(word=word.strip())  # Assuming a list of strings
 
 				scan_status.status = 'success'
