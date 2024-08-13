@@ -55,7 +55,7 @@
 					</div>
 					{% if cve.keywords %}
 						<div class="cve-keywords">
-							{{ cve.keywords }}
+							<a target="_blank" href="https://kartoteket.oslo.kommune.no/sok/?search_term={{cve.keywords}}">{{ cve.keywords }}</a>
 						</div>
 					{% endif %}
 				</article>
