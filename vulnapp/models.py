@@ -31,10 +31,20 @@ class CVE(models.Model):
 	cvss_severity = models.CharField(max_length=50, null=True, blank=True)
 	cwe = models.CharField(max_length=50, null=True, blank=True)
 	references = models.TextField()
-	known_exploited = models.BooleanField(default=False)
+	#known_exploited = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.cve_id
+
+
+	def known_exploited(self):
+		#print(f"sjekker known_exploited {self.cve_id}")
+		try:
+			ExploitedVulnerability.objects.get(cve_id=self.cve_id)
+			return True
+		except:
+			return False
+
 
 class Vulnerability(models.Model):
 	# Model to keep track of the vulnerability overview.
