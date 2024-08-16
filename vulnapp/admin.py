@@ -4,7 +4,17 @@ from .models import *
 # Register your models here.
 admin.site.register(Keyword)
 admin.site.register(Blacklist)
-admin.site.register(CVE)
+admin.site.register(MachineReference)
+admin.site.register(ExploitedVulnerability)
+admin.site.register(Software)
+admin.site.register(SoftwareHosts)
+admin.site.register(NessusData)
+admin.site.register(HostToBSS)
+
+@admin.register(CVE)
+class CVEAdmin(admin.ModelAdmin):
+	list_display = ('cve_id',)
+	search_fields = ('cve_id', 'description',)
 
 
 @admin.register(Vulnerability)
@@ -12,9 +22,6 @@ class VulnerabilityAdmin(admin.ModelAdmin):
 	list_display = ('id', 'description', 'severity', 'cvssV3', 'exploitTypes', 'exposedMachines', 'publishedOn', 'updatedOn', 'publicExploit', 'exploitVerified')
 	search_fields = ('name', 'description', 'id', 'cvssVector', 'exploitUris')
 	list_filter = ('severity', 'publicExploit', 'updatedOn', 'exploitInKit',)
-
-
-admin.site.register(MachineReference)
 
 
 @admin.register(HaveIBeenPwnedBreaches)
@@ -37,12 +44,6 @@ class FeedAdmin(admin.ModelAdmin):
 	list_filter = ('author',)
 
 
-
-admin.site.register(ExploitedVulnerability)
-admin.site.register(Software)
-admin.site.register(SoftwareHosts)
-
-
 @admin.register(ScanStatus)
 class ScanStatusAdmin(admin.ModelAdmin):
 	list_display = ('completed_at', 'scan_type', 'status', 'error_message')
@@ -54,11 +55,8 @@ class ShodanScanResultAdmin(admin.ModelAdmin):
 	search_fields = ('ip_address', 'transport', 'port', 'product', 'vulns', 'http_status', 'http_title', 'http_server', 'hostnames', 'data', 'cpe23', 'info')
 
 
-admin.site.register(NessusData)
-
-
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
 	list_display = ('object_id', 'created_at', 'updated_at', 'content',)
 
-admin.site.register(HostToBSS)
+

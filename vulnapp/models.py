@@ -45,6 +45,9 @@ class CVE(models.Model):
 		except:
 			return False
 
+	def keywords_list(self):
+		return json.loads(self.keywords)
+
 
 class Vulnerability(models.Model):
 	# Model to keep track of the vulnerability overview.

@@ -42,12 +42,7 @@
 					</div>
 					<!-- Check the length of the description and truncate if necessary -->
 					<p class="cve-description">
-						{{ cve.description|slice:":500" }}
-						{% if cve.description|length > 500 %}
-							<span class="ellipsis">...</span>
-							<span class="more-text">{{ cve.description|slice:"500:" }}</span>
-							<button class="view-more-btn" onclick="toggleDescription(this)">View More</button>
-						{% endif %}
+						{{ cve.description }}
 					</p>
 					<div class="cve-details">
 						<span>Published: {{ cve.published_date|date:"M d, Y" }}</span>
@@ -55,7 +50,10 @@
 					</div>
 					{% if cve.keywords %}
 						<div class="cve-keywords">
-							<a target="_blank" href="https://kartoteket.oslo.kommune.no/sok/?search_term={{cve.keywords}}">{{ cve.keywords }}</a>
+						{% for keyword in cve.keywords_list %}
+							<a target="_blank" href="https://kartoteket.oslo.kommune.no/sok/?search_term={{keyword}}">{{ keyword }}</a>
+							{% if not forloop.last %}, {% endif %}
+						{% endfor %}
 						</div>
 					{% endif %}
 				</article>
@@ -68,96 +66,6 @@
 
 
 </main>
-
-
-<script>
-
-document.addEventListener('DOMContentLoaded', function() {
-	var searchInput = document.getElementById('search-input');
-	var cveArticles = document.querySelectorAll('.cve');
-	var sortSelect = document.getElementById('sort-select');
-
-
-	searchInput.addEventListener('keyup', function(e) {
-		var searchTerm = e.target.value.toLowerCase();
-		cveArticles.forEach(function(article) {
-			var title = article.querySelector('.cve-title').textContent.toLowerCase();
-			var description = article.querySelector('.cve-description').textContent.toLowerCase();
-			if (title.includes(searchTerm) || description.includes(searchTerm)) {
-				article.style.display = '';
-			} else {
-				article.style.display = 'none';
-			}
-		});
-	});
-
-	sortSelect.addEventListener('change', function(e) {
-		var selectedOption = e.target.value;
-		var queryParams = new URLSearchParams(window.location.search);
-
-		// Update the 'sort_by' parameter based on the selected option
-		queryParams.set('sort_by', selectedOption);
-
-		// Update the page URL
-		window.location.search = queryParams.toString();
-	});
-
-	// Handle date filter change
-	var dateFilterSelect = document.getElementById('date-filter-select');
-	dateFilterSelect.addEventListener('change', function(e) {
-		var selectedOption = e.target.value;
-		var queryParams = new URLSearchParams(window.location.search);
-
-		// Update the 'date_filter' parameter based on the selected option
-		queryParams.set('date_filter', selectedOption);
-
-		// Update the page URL
-		window.location.search = queryParams.toString();
-	});
-
-	var filterKeywordsCheckbox = document.getElementById('filter-keywords');
-	filterKeywordsCheckbox.addEventListener('change', function(e) {
-		var queryParams = new URLSearchParams(window.location.search);
-
-		// Toggle the 'keywords' parameter based on checkbox state
-		if (this.checked) {
-			queryParams.set('keywords', 'true');
-		} else {
-			queryParams.delete('keywords');
-		}
-
-		// Prevent the default action to maintain the checkbox state until the page reloads
-		e.preventDefault();
-
-		// Update the page URL and reload
-		window.location.search = queryParams.toString();
-	});
-
-
-	// Toggle view button
-	var toggleViewBtn = document.getElementById('toggle-view-btn');
-	var vulnerabilitiesList = document.querySelector('.vulnerabilities-list');
-	var cveTable = document.querySelector('.cve-table');
-
-	// Initially hide the table view
-	cveTable.style.display = 'none';
-
-	toggleViewBtn.addEventListener('click', function() {
-		if (vulnerabilitiesList.style.display === 'none') {
-			vulnerabilitiesList.style.display = '';
-			cveTable.style.display = 'none';
-			toggleViewBtn.textContent = 'Show Table View';
-		} else {
-			vulnerabilitiesList.style.display = 'none';
-			cveTable.style.display = '';
-			toggleViewBtn.textContent = 'Show List View';
-		}
-	});
-
-});
-
-
-</script>
 
 
 {% endblock %}

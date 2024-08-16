@@ -133,6 +133,7 @@
 
 .cve-keywords {
     position: absolute;
+    border: 1px solid black;
     bottom: 10px; /* Adjust as needed */
     right: 10px; /* Adjust as needed */
     background: #E0E0E0; /* Light gray background */

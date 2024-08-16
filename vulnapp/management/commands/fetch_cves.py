@@ -1,18 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
-from django.utils import timezone
-import requests
-import json
-from datetime import datetime, timedelta
-import pytz
-import re
 from vulnapp.models import CVE, Keyword, ScanStatus, Software, Blacklist
-import spacy
-import os
-
-unique_software = []
-
-
-nlp = spacy.load("en_core_web_sm")
+from datetime import datetime, timedelta
+from django.utils import timezone
+import re, os, json, pytz, requests
 
 class Command(BaseCommand):
 	help = 'Fetch and store CVE data from NVD'
@@ -33,6 +23,7 @@ class Command(BaseCommand):
 
 		period = options.get('period', 'past_day')
 
+		# fetch and store vulnerabilities to database
 		try:
 			if period == 'past_day':
 				cve_data = self.fetch_cves_past_day()
@@ -59,6 +50,41 @@ class Command(BaseCommand):
 			scan_status.error_message = str(e)
 			scan_status.save()
 			raise CommandError(f'An error occurred: {str(e)}')
+
+
+		# Map vulnerabilities to software/keyword list based on description field in CVE data
+		try:
+			keyword_list = [keyword.word.lower() for keyword in Keyword.objects.all()]
+			start_date = timezone.now() - timedelta(days=14)
+			recent_cves = CVE.objects.filter(published_date__gte=start_date)
+
+			def findWholeWord(word):
+				return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search
+
+			for cve in recent_cves:
+				word_matches = set()
+				for word in keyword_list:
+					description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
+					if findWholeWord(word)(description): # findWholeWord returns a method
+						word_matches.add(word)
+
+				word_matches = list(word_matches)
+				if len(word_matches) > 0:
+					print(f"{word_matches}: {cve.cve_id}")
+
+				if len(word_matches) > 0:
+					cve.keywords = json.dumps(word_matches)
+					cve.save()
+				else:
+					cve.keywords = None
+					cve.save()
+
+		except Exception as e:
+			scan_status.status = 'error'
+			scan_status.error_message = "failed to map cves and keywords"
+			scan_status.save()
+			raise CommandError(f'An error occurred: {str(e)}')
+
 
 
 	def fetch_cves_past_day(self):
@@ -137,36 +163,6 @@ class Command(BaseCommand):
 				published_date = timezone.make_aware(published_date, timezone=pytz.UTC)
 				last_modified_date = timezone.make_aware(last_modified_date, timezone=pytz.UTC)
 
-
-				# Match software names from description
-				keyword_list = [keyword.word.lower() for keyword in Keyword.objects.all()]
-				word_matches = set()
-
-				import re
-				def findWholeWord(w):
-					return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
-
-				for word in keyword_list:
-					if findWholeWord(word.lower())(description.lower()):
-						word_matches.add(word)
-
-				keywords_string = ', '.join(sorted(word_matches))
-
-
-				# Process the text with spaCy
-				"""
-				doc = nlp(description)
-				potential_software_names = set()
-				for ent in doc.ents:
-					if ent.label_ in ["ORG", "PRODUCT"]:
-						# Normalize entity text to lowercase for case-insensitive comparison
-						normalized_ent_text = ent.text.lower()
-						# Check if the normalized entity text is in the keyword list
-						if normalized_ent_text in keyword_list_all and normalized_ent_text not in all_blacklisted_words:
-							potential_software_names.add(normalized_ent_text)
-				"""
-
-
 				cve, created = CVE.objects.update_or_create(
 					cve_id=cve_id,
 					defaults={
@@ -175,7 +171,7 @@ class Command(BaseCommand):
 						'last_modified_date': last_modified_date,
 						'vuln_status': item['cve']['vulnStatus'],
 						'description': description,
-						'keywords': keywords_string,  # Save the string of keywords
+						'keywords': None,
 						'cvss_score': cvss_score,
 						'cvss_vector': cvss_vector,
 						'cvss_severity': cvss_severity,
@@ -183,6 +179,12 @@ class Command(BaseCommand):
 						'references': references,
 					}
 				)
+
+				#if created:
+				#	print(f"Added {cve.cve_id}")
+				#else:
+				#	print(f"Updated {cve.cve_id}")
+
 			details = scan_status.get_details()
 			details['processed_cves'] = len(data["vulnerabilities"])
 			scan_status.set_details(details)

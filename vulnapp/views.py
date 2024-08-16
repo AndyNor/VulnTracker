@@ -44,7 +44,7 @@ def cve(request):
 
 		day_cves = CVE.objects.filter(published_date__date=current_date)
 		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
-		day_cves = day_cves.exclude(keywords='')
+		day_cves = day_cves.exclude(keywords=None)
 		day_cves = day_cves.order_by('-cvss_score')
 
 		days.append({"datetime": current_date, "cves": list(day_cves)})
@@ -75,7 +75,7 @@ def cve_without(request):
 
 		day_cves = CVE.objects.filter(published_date__date=current_date)
 		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
-		day_cves = day_cves.filter(keywords='')
+		day_cves = day_cves.filter(keywords=None)
 		day_cves = day_cves.order_by('-cvss_score')
 
 		days.append({"datetime": current_date, "cves": list(day_cves)})
