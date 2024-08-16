@@ -9,9 +9,9 @@
 <main class="main-content" style="width:100%">
 
 	<div class="filter-section">
-		<div class="filter-header">
+		<div class="filter-header" style="text-align: center;">
 			<h2>News from feeds (RSS/Atom)</h2>
-			<p style="text-align: center;">text</p>
+			<p>Her vises nyheter fra utvalgte RSS-feeds de siste {{number_days}} dager. Aktive kilder er {% for source in sources %}<i>{{ source.name }}</i>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 		</div>
 	</div>
 

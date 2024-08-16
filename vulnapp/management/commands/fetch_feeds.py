@@ -9,6 +9,14 @@ import feedparser
 from time import mktime
 import pytz
 
+RSS_SOURCES = [
+	{"name": "TheHackersNews", "url": "https://feeds.feedburner.com/TheHackersNews"},
+	{"name": "Securityweek", "url":"https://www.securityweek.com/feed/"},
+	{"name": "NCSC.gov.uk", "url":"https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml"},
+	{"name": "Digi.no", "url":"https://www.digi.no/rss"},
+	{"name": "Bleepingcomputer", "url":"https://www.bleepingcomputer.com/feed/"},
+	#"https://telenorsoc-news.blogspot.com/feeds/posts/default",
+]
 
 
 class Command(BaseCommand):
@@ -20,19 +28,9 @@ class Command(BaseCommand):
 		scan_status = ScanStatus.objects.create(scan_type=scan_type, status='in_progress', details='{}')
 
 		try:
-
-			rss_sources = [
-				"https://feeds.feedburner.com/TheHackersNews",
-				"https://www.securityweek.com/feed/",
-				"https://www.ncsc.gov.uk/api/1/services/v1/report-rss-feed.xml",
-				"https://www.digi.no/rss",
-				"https://www.bleepingcomputer.com/feed/",
-				#"https://telenorsoc-news.blogspot.com/feeds/posts/default",
-			]
-
-			for rss_source in rss_sources:
+			for rss_source in RSS_SOURCES:
 				try:
-					feed = feedparser.parse(rss_source)
+					feed = feedparser.parse(rss_source["url"])
 					if feed.status == 200:
 						for entry in feed.entries:
 

@@ -21,6 +21,8 @@ from django.db.models import Count, Q, Sum
 
 from .models import *
 from .forms import *
+from vulnapp.management.commands.fetch_feeds import RSS_SOURCES
+
 
 def home(request):
 	return render(request, 'home.html', {
@@ -97,6 +99,8 @@ def news(request):
 	number_days = 7
 	days = []
 
+	sources = RSS_SOURCES
+
 	for day in range(number_days):
 		current_datetime = timezone.now() - datetime.timedelta(days=day)
 		current_date = current_datetime.date()
@@ -114,6 +118,7 @@ def news(request):
 		'days': days,
 		'number_days': number_days,
 		'scan_status': fetch_scan_info(),
+		'sources': sources,
 	})
 
 
