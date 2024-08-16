@@ -42,7 +42,7 @@
 					</div>
 					<!-- Check the length of the description and truncate if necessary -->
 					<p class="cve-description">
-						{{ cve.description }}
+						{{ cve.description|slice:":700" }}
 					</p>
 					<div class="cve-details">
 						<span>Published: {{ cve.published_date|date:"M d, Y" }}</span>
