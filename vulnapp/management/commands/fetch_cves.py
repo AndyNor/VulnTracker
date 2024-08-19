@@ -67,6 +67,8 @@ class Command(BaseCommand):
 					description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
 					if findWholeWord(word)(description): # findWholeWord returns a method
 						word_matches.add(word)
+					if findWholeWord(word)(source_identifier): # findWholeWord returns a method
+						word_matches.add(word)
 
 				word_matches = list(word_matches)
 				if len(word_matches) > 0:
