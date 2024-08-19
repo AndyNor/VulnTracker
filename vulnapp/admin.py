@@ -13,8 +13,8 @@ admin.site.register(HostToBSS)
 
 @admin.register(CVE)
 class CVEAdmin(admin.ModelAdmin):
-	list_display = ('cve_id',)
-	search_fields = ('cve_id', 'description',)
+	list_display = ('cve_id', 'source_identifier', 'vuln_status', 'keywords')
+	search_fields = ('cve_id', 'description', 'source_identifier',)
 
 
 @admin.register(Vulnerability)

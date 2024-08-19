@@ -30,7 +30,7 @@
 			{% for cve in day.cves %}
 				<article class="cve">
 					 <div class="cve-header">
-						<h3 class="cve-title"><a style="text-decoration: none; color: black;" target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ cve.cve_id }}">{{ cve.cve_id }}</a></h3>
+						<h3 class="cve-title"><a style="text-decoration: none; color: black;" target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ cve.cve_id }}">{{ cve.cve_id }}</a> <span style="font-size: 11px;">({{ cve.vuln_status }})</h3>
 							<div class="cve-tags">
 								{% if cve.known_exploited %}
 									<div class="cve-tag known-exploited">Known Exploited</div>
@@ -42,7 +42,7 @@
 					</div>
 					<!-- Check the length of the description and truncate if necessary -->
 					<p class="cve-description">
-						{{ cve.description|slice:":700" }}
+						<b>{{ cve.source_identifier }}</b>: {{ cve.description|slice:":700" }}
 					</p>
 					<div class="cve-details">
 						<span>Published: {{ cve.published_date|date:"M d, Y" }}</span>
