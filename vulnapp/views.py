@@ -37,7 +37,7 @@ def cve(request):
 	"""
 
 	cvss_limit = 6.5
-	number_days = 14
+	number_days = 7
 	days = []
 
 	for day in range(number_days):
