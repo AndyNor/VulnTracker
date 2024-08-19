@@ -65,6 +65,7 @@ class Command(BaseCommand):
 				word_matches = set()
 				for word in keyword_list:
 					description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
+					source_identifier = cve.source_identifier.replace('(','').replace(')','')
 					if findWholeWord(word)(description): # findWholeWord returns a method
 						word_matches.add(word)
 					if findWholeWord(word)(source_identifier): # findWholeWord returns a method
