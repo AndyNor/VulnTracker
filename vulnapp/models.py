@@ -239,6 +239,9 @@ class ShodanScanResult(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 	comments = models.TextField(null=True)
 	scan_timestamp = models.DateTimeField(null=True)
+	kartoteket_result = models.TextField(null=True)
+
+
 
 	def __str__(self):
 		return self.ip_address

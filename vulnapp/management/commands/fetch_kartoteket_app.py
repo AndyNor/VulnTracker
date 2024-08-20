@@ -12,9 +12,9 @@ import os
 class Command(BaseCommand):
 	def handle(self, *args, **options):
 
-		help = 'Fetch data from Kartoteket'
+		help = 'Fetch app data from Kartoteket'
 
-		scan_type = "Kartoteket"
+		scan_type = "Kartoteket app"
 		scan_status = ScanStatus.objects.create(scan_type=scan_type, status='in_progress', details='{}')
 
 		try:

@@ -4,9 +4,10 @@ import os
 import shodan
 import project_secrets
 import json
-from datetime import datetime
+import datetime
 import pytz
 from vulnapp.views import push_pushover
+import requests
 
 class Command(BaseCommand):
 	help = 'Scans IP range and store the results in the database'
@@ -38,15 +39,26 @@ class Command(BaseCommand):
 
 				for result in results['matches']:
 					ip_address = result['ip_str']
+					port = result['port']
 
-					timestamp = result.get('timestamp', None)
-					if timestamp:
-						timestamp = datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%f')
+
+					scan_timestamp = result.get('timestamp', None)
+					if scan_timestamp:
+						scan_timestamp = datetime.datetime.strptime(scan_timestamp, '%Y-%m-%dT%H:%M:%S.%f')
+
+					print(f"{ip_address} was last scanned {scan_timestamp}")
+
+					tidsgrense = datetime.datetime.today() - datetime.timedelta(days=1)
+					if scan_timestamp > tidsgrense:
+						seen_recently = True
+					else:
+						seen_recently = False
+
 
 					scan_result, created = ShodanScanResult.objects.update_or_create(
 						ip_address=ip_address,
 						defaults = {
-							"port": result['port'],
+							"port": port,
 							"transport": result.get('transport', None),
 							"product": result.get('product', None),
 							"vulns": json.dumps(list(result.get('vulns', {}).keys())),
@@ -57,7 +69,7 @@ class Command(BaseCommand):
 							"data": result.get('data', []),
 							"cpe23": json.dumps(result.get('cpe23', [])),
 							"info": result.get('info', None),
-							"scan_timestamp": utc_tz.localize(timestamp),
+							"scan_timestamp": utc_tz.localize(scan_timestamp),
 							"json_data": result,
 						}
 					)

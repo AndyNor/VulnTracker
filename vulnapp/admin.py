@@ -51,7 +51,7 @@ class ScanStatusAdmin(admin.ModelAdmin):
 
 @admin.register(ShodanScanResult)
 class ShodanScanResultAdmin(admin.ModelAdmin):
-	list_display = ('ip_address', 'created_at', 'updated_at', 'transport', 'port', 'product', 'info', 'http_status', 'http_server', 'http_title', 'hostnames', 'cpe23')
+	list_display = ('ip_address', 'created_at', 'updated_at', 'transport', 'port', 'product', 'info', 'http_status', 'http_server', 'http_title', 'hostnames', 'cpe23', 'kartoteket_result')
 	search_fields = ('ip_address', 'transport', 'port', 'product', 'vulns', 'http_status', 'http_title', 'http_server', 'hostnames', 'data', 'cpe23', 'info')
 
 
