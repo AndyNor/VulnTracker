@@ -47,6 +47,7 @@ class FeedAdmin(admin.ModelAdmin):
 @admin.register(ScanStatus)
 class ScanStatusAdmin(admin.ModelAdmin):
 	list_display = ('completed_at', 'scan_type', 'status', 'error_message')
+	list_filter = ('scan_type',)
 
 
 @admin.register(ShodanScanResult)
