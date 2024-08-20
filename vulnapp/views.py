@@ -871,7 +871,7 @@ def shodan_stale(request):
 	"""
 	recent_days = 14
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=recent_days)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__lt=tidsgrense) | Q(scan_timestamp__lt=tidsgrense)).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(scan_timestamp__lt=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:
@@ -907,7 +907,7 @@ def shodan(request):
 	"""
 	recent_days = 14
 	tidsgrense = datetime.date.today() - datetime.timedelta(days=recent_days)
-	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(updated_at__gte=tidsgrense) & Q(scan_timestamp__gte=tidsgrense)).order_by('-created_at')
+	results = ShodanScanResult.objects.all().filter(~Q(port=None)).filter(Q(scan_timestamp__gte=tidsgrense)).order_by('-created_at')
 
 	shodan_content_type = ContentType.objects.get_for_model(ShodanScanResult)
 	for result in results:

@@ -23,15 +23,14 @@
 	<thead>
 		<tr>
 			<th>First reported</th>
-			<th>Most recent reported</th>
 			<th>Most recent scan date</th>
 			<th>IP Address</th>
 			<th>Port</th>
 			<th>Product</th>
-			<th>HTTP title</th>
-			<th>HTTP status</th>
+			<th>HTTP</th>
 			<th>Hostnames</th>
 			<th>Vulnerabilities</th>
+			<th>Kartoteket</th>
 			<th width="33%">Comments</th>
 		</tr>
 	</thead>
@@ -39,13 +38,14 @@
 	{% for result in results %}
 		<tr>
 			<td>{{ result.created_at|date:"Ymd" }}<br>{{ result.created_at|timesince }}</td>
-			<td>{{ result.updated_at|date:"Ymd" }}<br>{{ result.updated_at|timesince }}</td>
 			<td>{{ result.scan_timestamp|date:"Ymd" }}<br>{{ result.scan_timestamp|timesince }}</td>
 			<td>{{ result.ip_address|default:"" }}</td>
 			<td>{{ result.port|default:"" }} {{ result.transport }}</td>
 			<td>{{ result.product|default:"" }} <br> {{ result.http_server|default:"" }}</td>
-			<td>{{ result.http_title|default:"" }}</td>
-			<td>{{ result.http_status|default:"" }} {{result.http_status_display}}</td>
+			<td>
+				{{ result.http_title|default:"" }}<br>
+				{{ result.http_status|default:"" }} {{result.http_status_display}}
+			</td>
 			<td>
 				{% for hostname in result.hostnames_list %}
 				{{hostname}}<br>
@@ -55,13 +55,16 @@
 				{{ result.vulns_count }}
 			</td>
 			<td>
+				{{ result.kartoteket_json|safe }}
+			</td>
+			<td>
 				<div class="comment-form">
 					<form action="{% url 'add_comment' %}" method="post">
 						{% csrf_token %}
 						<input type="hidden" name="result_id" value="{{ result.id }}">
 						<input type="hidden" name="comment_type" value="shodan">
 						<div class="comment-form-controls"> <!-- Flex container -->
-							<textarea style="height: 80px;" name="comment_content">{{ result.comment_content }}</textarea>
+							<textarea style="height: 120px;" name="comment_content">{{ result.comment_content }}</textarea>
 							<button type="submit">Update</button>
 						</div>
 					</form>

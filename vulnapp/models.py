@@ -252,6 +252,18 @@ class ShodanScanResult(models.Model):
 		except:
 			return ""
 
+	def kartoteket_json(self):
+		if self.kartoteket_result is not None:
+			result = json.loads(self.kartoteket_result)
+			if "error" in result:
+				return "Ingen treff"
+			else:
+				dns = "".join([f"<li>{item}</li>" for item in result["dns_matches"]])
+				vip = "".join([f"<li>{item}</li>" for item in result["vip_matches"]])
+				vlan = "".join([f"<li>{item}</li>" for item in result["matching_vlans"][:-1]])
+				return f"DNS: {dns}<br>VIP: {vip}<br>VLAN: {vlan}"
+		else:
+			return "-"
 
 	def hostnames_list(self):
 		try:
