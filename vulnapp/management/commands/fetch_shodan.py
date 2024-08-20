@@ -48,13 +48,6 @@ class Command(BaseCommand):
 
 					print(f"{ip_address} was last scanned {scan_timestamp}")
 
-					tidsgrense = datetime.datetime.today() - datetime.timedelta(days=1)
-					if scan_timestamp > tidsgrense:
-						seen_recently = True
-					else:
-						seen_recently = False
-
-
 					scan_result, created = ShodanScanResult.objects.update_or_create(
 						ip_address=ip_address,
 						defaults = {
