@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
 		try:
 			url = os.environ["KARTOTEKET_SOFTWARE"]
-			headers = None
+			headers = {"key": os.environ["KARTOTEKET_SOFTWARE_KEY"]}
 			print(f"Kobler til {url}")
 			connection = requests.get(url, headers=headers, timeout=1)
 			print(f"Status code: {connection.status_code}")

@@ -30,7 +30,7 @@ class Command(BaseCommand):
 				kartoteket_result = None
 				if kartoteket_iplookup_working:
 					url = os.environ["KARTOTEKET_IPLOOKUP"]
-					headers = None
+					headers = {"key": os.environ["KARTOTEKET_IPLOOKUP_KEY"]}
 					lookup_url = f"{url}?ip={shodan_result.ip_address}&port={shodan_result.port}"
 					print(f"Kobler til {lookup_url}")
 					try:
