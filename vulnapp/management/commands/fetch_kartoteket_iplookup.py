@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
 		try:
 
-			tidsgrense = datetime.datetime.today() - datetime.timedelta(days=1)
+			tidsgrense = datetime.datetime.today() - datetime.timedelta(days=7)
 			tidsgrense = utc_tz.localize(tidsgrense)
 			for shodan_result in ShodanScanResult.objects.filter(~Q(port=None)).filter(Q(scan_timestamp__gte=tidsgrense)):
 
