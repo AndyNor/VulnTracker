@@ -17,15 +17,16 @@ class Command(BaseCommand):
 		help = 'Fetch IP data from Kartoteket'
 
 		scan_type = "Kartoteket iplookup"
+		days_old = 5
 		scan_status = ScanStatus.objects.create(scan_type=scan_type, status='in_progress', details='{}')
 		kartoteket_iplookup_working = True # assume it's working
 		utc_tz = pytz.timezone('UTC')
 
 		try:
 
-			tidsgrense = datetime.datetime.today() - datetime.timedelta(days=7)
+			tidsgrense = datetime.datetime.today() - datetime.timedelta(days=days_old)
 			tidsgrense = utc_tz.localize(tidsgrense)
-			for shodan_result in ShodanScanResult.objects.filter(~Q(port=None)).filter(Q(scan_timestamp__gte=tidsgrense)):
+			for shodan_result in ShodanScanResult.objects.filter(~Q(port=None)).filter(scan_timestamp__gte=tidsgrense):
 
 				kartoteket_result = None
 				if kartoteket_iplookup_working:
