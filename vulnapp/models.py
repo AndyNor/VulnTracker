@@ -261,7 +261,7 @@ class ShodanScanResult(models.Model):
 				dns = "".join([f"<li>{item}</li>" for item in result["dns_matches"]])
 				vip = "".join([f"<li>{item}</li>" for item in result["vip_matches"]])
 				vlan = "".join([f"<li>{item}</li>" for item in result["matching_vlans"][:-1]])
-				pool_members = "".join([f"<li>{item}</li>" for item in result["vip_pool_members"]])
+				pool_members = "".join([f"<li>{item.server} {item.host_ip} {item.external_vip} {item.server_vlan} {item.bss.0}</li>" for item in result["vip_pool_members"]])
 				return f"DNS: {dns}<br>VIP: {vip}<br>VLAN: {vlan}<br>Pool members: {pool_members}"
 		else:
 			return "-"
