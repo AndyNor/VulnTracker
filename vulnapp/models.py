@@ -255,6 +255,7 @@ class ShodanScanResult(models.Model):
 	def kartoteket_json(self):
 		if self.kartoteket_result is not None:
 			result = json.loads(self.kartoteket_result)
+			return result
 			if "error" in result:
 				return "Ingen treff"
 			else:
