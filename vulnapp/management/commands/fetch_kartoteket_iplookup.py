@@ -43,7 +43,6 @@ class Command(BaseCommand):
 
 						else:
 							print(connection.status_code)
-							print(connection.text)
 							kartoteket_iplookup_working = False
 							print("Skipping Kartoteket IP-loopup")
 					except Exception as e:
