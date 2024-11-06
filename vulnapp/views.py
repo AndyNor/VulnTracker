@@ -52,6 +52,7 @@ def cve(request):
 		days.append({"datetime": current_date, "cves": list(day_cves)})
 
 	mark_words = list(Keyword.objects.all().values_list('word', flat=True))
+	mark_words.extend(list(ProgramvareLeverandorer.objects.all().values_list('word', flat=True)))
 
 	return render(request, 'cve.html', {
 		'days': days,

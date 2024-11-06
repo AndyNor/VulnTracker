@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from vulnapp.models import CVE, Keyword, ScanStatus, Software, Blacklist
+from vulnapp.models import *
 from datetime import datetime, timedelta
 from django.utils import timezone
 import re, os, json, pytz, requests
@@ -55,6 +55,7 @@ class Command(BaseCommand):
 		# Map vulnerabilities to software/keyword list based on description field in CVE data
 		try:
 			keyword_list = [keyword.word.lower() for keyword in Keyword.objects.all()]
+			programvarelev_list = [keyword.word.lower() for keyword in ProgramvareLeverandorer.objects.all()]
 			start_date = timezone.now() - timedelta(days=14)
 			recent_cves = CVE.objects.filter(published_date__gte=start_date)
 
@@ -65,17 +66,18 @@ class Command(BaseCommand):
 				word_matches = set()
 				for word in keyword_list:
 					description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
-					source_identifier = cve.source_identifier.replace('(','').replace(')','')
 					if findWholeWord(word)(description): # findWholeWord returns a method
 						word_matches.add(word)
+
+				for word in programvarelev_list:
+					source_identifier = cve.source_identifier.replace('(','').replace(')','')
 					if findWholeWord(word)(source_identifier): # findWholeWord returns a method
 						word_matches.add(word)
 
 				word_matches = list(word_matches)
-				if len(word_matches) > 0:
-					print(f"{word_matches}: {cve.cve_id}")
 
 				if len(word_matches) > 0:
+					print(f"{word_matches}: {cve.cve_id}")
 					cve.keywords = json.dumps(word_matches)
 					cve.save()
 				else:

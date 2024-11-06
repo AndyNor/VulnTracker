@@ -11,6 +11,7 @@ cd /var/web/VulnTracker2/
 # Run the scripts
 python manage.py fetch_haveibeenpwned
 python manage.py fetch_shodan
+python manage.py fetch_kartoteket_knownexp
 
 #python manage.py fetch_nessus
 #python manage.py fetch_software

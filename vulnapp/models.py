@@ -4,7 +4,15 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 class Keyword(models.Model):
-	# Stores keywords
+	# Stores programvare
+	word = models.CharField(max_length=255, unique=True)
+
+	def __str__(self):
+		return self.word
+
+
+class ProgramvareLeverandorer(models.Model):
+	# Stores programvareleverandorer
 	word = models.CharField(max_length=255, unique=True)
 
 	def __str__(self):
