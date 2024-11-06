@@ -255,14 +255,14 @@ class ShodanScanResult(models.Model):
 	def kartoteket_json(self):
 		if self.kartoteket_result is not None:
 			result = json.loads(self.kartoteket_result)
-			return result
 			if "error" in result:
 				return "Ingen treff"
 			else:
 				dns = "".join([f"<li>{item}</li>" for item in result["dns_matches"]])
 				vip = "".join([f"<li>{item}</li>" for item in result["vip_matches"]])
 				vlan = "".join([f"<li>{item}</li>" for item in result["matching_vlans"][:-1]])
-				return f"DNS: {dns}<br>VIP: {vip}<br>VLAN: {vlan}"
+				pool_members = "".join([f"<li>{item}</li>" for item in result["vip_pool_members"]])
+				return f"DNS: {dns}<br>VIP: {vip}<br>VLAN: {vlan}<br>Pool members: {pool_members}"
 		else:
 			return "-"
 
