@@ -43,12 +43,15 @@ class Command(BaseCommand):
 
 						else:
 							print(connection.status_code)
+							print(connection.text)
 							kartoteket_iplookup_working = False
+							print("Skipping Kartoteket IP-loopup")
 					except Exception as e:
 						self.stdout.write(self.style.ERROR(f'{str(e)}'))
 						kartoteket_iplookup_working = False
 				else:
-					print("Skipping Kartoteket IP-loopup")
+					pass
+
 
 			if kartoteket_iplookup_working:
 				scan_status.status = 'success'
