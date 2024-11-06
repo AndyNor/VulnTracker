@@ -42,6 +42,7 @@ class Command(BaseCommand):
 							print(f"Oppdaterte {shodan_result.ip_address} sist skannet {shodan_result.scan_timestamp}")
 
 						else:
+							print(connection.status_code)
 							kartoteket_iplookup_working = False
 					except Exception as e:
 						self.stdout.write(self.style.ERROR(f'{str(e)}'))
