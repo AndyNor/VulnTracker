@@ -83,6 +83,7 @@ class Command(BaseCommand):
 				else:
 					cve.keywords = None
 					cve.save()
+			print(f"\n\nDone loading all CVE's")
 
 		except Exception as e:
 			scan_status.status = 'error'
