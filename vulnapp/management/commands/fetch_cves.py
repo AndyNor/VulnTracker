@@ -53,43 +53,44 @@ class Command(BaseCommand):
 
 
 		# Map vulnerabilities to software/keyword list based on description field in CVE data
-		try:
-			keyword_list = [keyword.word.lower() for keyword in Keyword.objects.all()]
-			programvarelev_list = [keyword.word.lower() for keyword in ProgramvareLeverandorer.objects.all()]
-			start_date = timezone.now() - timedelta(days=14)
-			recent_cves = CVE.objects.filter(published_date__gte=start_date)
+		if cve_data:
+			try:
+				keyword_list = [keyword.word.lower() for keyword in Keyword.objects.all()]
+				programvarelev_list = [keyword.word.lower() for keyword in ProgramvareLeverandorer.objects.all()]
+				start_date = timezone.now() - timedelta(days=14)
+				recent_cves = CVE.objects.filter(published_date__gte=start_date)
 
-			def findWholeWord(word):
-				return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search
+				def findWholeWord(word):
+					return re.compile(r'\b({0})\b'.format(word), flags=re.IGNORECASE).search
 
-			for cve in recent_cves:
-				word_matches = set()
-				for word in keyword_list:
-					description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
-					if findWholeWord(word)(description): # findWholeWord returns a method
-						word_matches.add(word)
+				for cve in recent_cves:
+					word_matches = set()
+					for word in keyword_list:
+						description = cve.description.replace('(','').replace(')','') # parentheses are considered word bountry by regex
+						if findWholeWord(word)(description): # findWholeWord returns a method
+							word_matches.add(word)
 
-				for word in programvarelev_list:
-					source_identifier = cve.source_identifier.replace('(','').replace(')','')
-					if findWholeWord(word)(source_identifier): # findWholeWord returns a method
-						word_matches.add(word)
+					for word in programvarelev_list:
+						source_identifier = cve.source_identifier.replace('(','').replace(')','')
+						if findWholeWord(word)(source_identifier): # findWholeWord returns a method
+							word_matches.add(word)
 
-				word_matches = list(word_matches)
+					word_matches = list(word_matches)
 
-				if len(word_matches) > 0:
-					print(f"{word_matches}: {cve.cve_id}")
-					cve.keywords = json.dumps(word_matches)
-					cve.save()
-				else:
-					cve.keywords = None
-					cve.save()
-			print(f"\n\nDone loading all CVE's")
+					if len(word_matches) > 0:
+						print(f"{word_matches}: {cve.cve_id}")
+						cve.keywords = json.dumps(word_matches)
+						cve.save()
+					else:
+						cve.keywords = None
+						cve.save()
+				print(f"\n\nDone loading all CVE's")
 
-		except Exception as e:
-			scan_status.status = 'error'
-			scan_status.error_message = "failed to map cves and keywords"
-			scan_status.save()
-			raise CommandError(f'An error occurred: {str(e)}')
+			except Exception as e:
+				scan_status.status = 'error'
+				scan_status.error_message = "failed to map cves and keywords"
+				scan_status.save()
+				raise CommandError(f'An error occurred: {str(e)}')
 
 
 
