@@ -101,7 +101,7 @@ class Command(BaseCommand):
 
 	def fetch_cves(self, date_start, date_end):
 
-		retries_left = 2
+		retries_left = 6
 
 		session = requests.Session()
 		params = {
