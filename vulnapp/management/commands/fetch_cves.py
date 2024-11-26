@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from vulnapp.models import *
 from datetime import datetime, timedelta
 from django.utils import timezone
-import re, os, json, pytz, requests, time
+import re, os, json, pytz, requests, time, random
 
 class Command(BaseCommand):
 	help = 'Fetch and store CVE data from NVD'
@@ -101,7 +101,7 @@ class Command(BaseCommand):
 
 	def fetch_cves(self, date_start, date_end):
 
-		retries_left = 6
+		retries_left = 2
 
 		session = requests.Session()
 		params = {
@@ -111,7 +111,7 @@ class Command(BaseCommand):
 
 		print(f"Connecting to {self.base_url}")
 		print(f"Using parameters {params}")
-		while retries_left >= 0:
+		while retries_left > 0:
 			try:
 				response = session.get(self.base_url, headers=self.headers, params=params, timeout=(5, 30), stream=True)
 				print(f"Getting {response.status_code} from service..")
@@ -128,8 +128,10 @@ class Command(BaseCommand):
 				self.stdout.write(f"Request failed: {e}")
 				#return None
 			retries_left -= 1 # reduce retry counter
-			print(f"Waiting 5 minutes for next attempt. {retries_left} retries left.")
-			time.sleep(300)
+			if retries_left > 0:
+				random_wait =  random.randint(250, 350)
+				print(f"Waiting {random_wait} seconds for next attempt. {retries_left} retries left.")
+				time.sleep(random_wait)
 
 	def fetch_cves_past_week(self):
 		today = datetime.utcnow()
