@@ -12,6 +12,6 @@ cd /var/web/VulnTracker2/
 python manage.py fetch_kartoteket_app
 python manage.py fetch_kartoteket_iplookup
 python manage.py fetch_cisa_known_exploited
-python manage.py fetch_cves
 python manage.py fetch_feeds
+python manage.py fetch_cves
 
