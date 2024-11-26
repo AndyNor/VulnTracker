@@ -113,7 +113,7 @@ class Command(BaseCommand):
 		print(f"Using parameters {params}")
 		while retries_left > 0:
 			try:
-				response = session.get(self.base_url, headers=self.headers, params=params, timeout=(5, 30), stream=True)
+				response = session.get(self.base_url, headers=self.headers, params=params, timeout=(5, 200), stream=True)
 				print(f"Getting {response.status_code} from service..")
 				if response.status_code == 200:
 					data = []
