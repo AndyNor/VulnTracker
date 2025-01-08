@@ -17,10 +17,12 @@
 			<a href="{% url 'home' %}" class="top-nav-brand">Sårbarhetsoversikten</a>
 			<nav class="top-nav-menu">
 				<ul>
+					<li><a href="https://kartoteket.oslo.kommune.no/rapport/vulnstats/overview/">Qualys-data</a></li>
 					<li><a href="{% url 'cve' %}">CVEs</a></li>
 					<li><a href="{% url 'news' %}">News</a></li>
 					<li><a href="{% url 'shodan' %}">Shodan</a></li>
 					<li><a href="{% url 'haveibeenpwned' %}">HaveIBeenPwned</a></li>
+					<li><a href="https://portal.azure.com/#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/SignIns/objectId/eaf27a8e-00ad-4070-ace7-5e06474d8287/appId/dfa72c7a-4ffc-400c-a980-c49edce8b49e/preferredSingleSignOnMode~/null/servicePrincipalType/Application/fromNav/">Pålogginger</a></li>
 					{% comment %}
 					<li><a href="{% url 'defender_vulnerabilities' %}">Defender Vulnerabilities</a></li>
 					<li><a href="{% url 'software_list_server' %}">Software</a></li>
