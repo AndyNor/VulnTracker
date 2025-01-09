@@ -12,7 +12,7 @@
 		{% if heading == 'cve' %}
 		<div class="filter-header">
 			<h2>NIST CVE - Oslo kommune products</h2>
-			<p style="text-align: center;">This page shows all newly published NIST vulnerabilities (CVE) last {{ number_days}} days with a score of {{cvss_limit}} or higher, combined with a <a href="{% url 'cve_keywords' %}">software or component</a> Oslo kommune has in production. You can also see <a href="{% url 'cve_without' %}">all vulnerabilities except tagged ones</a></p>
+			<p style="text-align: center;">This page shows all newly published NIST vulnerabilities (CVE) last {{ number_days}} days with a score of {{cvss_limit}} or higher, combined with a <a href="{% url 'cve_keywords' %}">software or component</a> Oslo kommune has in production. All CVEs with a score of {{ cvss_critical_limit }} or highter will be shown, even if not used by Oslo kommune. You can also see <a href="{% url 'cve_without' %}">all vulnerabilities except tagged ones</a></p>
 		</div>
 		{% endif %}
 		{% if heading == 'cve_without' %}

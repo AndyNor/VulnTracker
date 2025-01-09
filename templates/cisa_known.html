@@ -11,7 +11,7 @@
 	<div class="filter-section">
 		<div class="filter-header">
 			<h2>CISA Known exploited vulnerabilities</h2>
-			<p style="text-align: center;">This page shows all newly published CISA Known exploited vulnerabilities the last {{ number_days}} days.</a></p>
+			<p style="text-align: center;">This page shows all newly published CISA Known exploited vulnerabilities the last {{ number_days}} days. Go to <a href="https://kartoteket.oslo.kommune.no/rapport/vulnstats/severity/exploited/5/" target="_blank">Kartoteket</a> for known exploitable within the Qualys data.</p>
 		</div>
 	</div>
 
@@ -36,6 +36,9 @@
 						<br><br>
 						<b>Action:</b>: {{ known_exploited.required_action|slice:":700" }}
 					</p>
+
+					<a href="https://kartoteket.oslo.kommune.no/rapport/vulnstats/search/?query={{known_exploited.cve_ref}}" target="_blank">Sjekk qualysdata</a>
+
 					<div class="cve-details">
 						<span>Published: {{ known_exploited.date_added|date:"M d, Y" }}</span>
 						<span>Due date: {{ known_exploited.due_date|date:"M d, Y" }}</span>

@@ -34,7 +34,7 @@ def home(request):
 def cisa_known(request):
 
 	#cvss_limit = 6.5
-	number_days = 70
+	number_days = 42
 	days = []
 
 	for day in range(number_days):
@@ -66,6 +66,7 @@ def cve(request):
 	"""
 
 	cvss_limit = 6.5
+	cvss_critical_limit = 9.8
 	number_days = 7
 	days = []
 
@@ -75,7 +76,7 @@ def cve(request):
 
 		day_cves = CVE.objects.filter(published_date__date=current_date)
 		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
-		day_cves = day_cves.exclude(keywords=None)
+		day_cves = day_cves.exclude(keywords=None, cvss_score__lt=cvss_critical_limit)
 		day_cves = day_cves.order_by('-cvss_score')
 
 		days.append({"datetime": current_date, "cves": list(day_cves)})
@@ -87,6 +88,7 @@ def cve(request):
 		'days': days,
 		'number_days': number_days,
 		'cvss_limit': cvss_limit,
+		'cvss_critical_limit': cvss_critical_limit,
 		'scan_status': fetch_scan_info(),
 		'heading': "cve",
 		'mark_words': mark_words,
