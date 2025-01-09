@@ -30,6 +30,35 @@ def home(request):
 	})
 
 
+
+def cisa_known(request):
+
+	#cvss_limit = 6.5
+	number_days = 21
+	days = []
+
+	for day in range(number_days):
+		current_datetime = timezone.now() - datetime.timedelta(days=day)
+		current_date = current_datetime.date()
+
+		day_cves = ExploitedVulnerability.objects.filter(date_added=current_date)
+		#day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
+		#day_cves = day_cves.order_by('-cvss_score')
+
+		days.append({"datetime": current_date, "known_exploited": list(day_cves)})
+
+	mark_words = list(Keyword.objects.all().values_list('word', flat=True))
+	mark_words.extend(list(ProgramvareLeverandorer.objects.all().values_list('word', flat=True)))
+
+	return render(request, 'cisa_known.html', {
+		'days': days,
+		'number_days': number_days,
+		#'cvss_limit': cvss_limit,
+		'scan_status': fetch_scan_info(),
+		'mark_words': mark_words,
+	})
+
+
 def cve(request):
 	"""
 	Index function to display the main page.

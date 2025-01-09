@@ -53,6 +53,7 @@ urlpatterns = [
 	path('software_list/server', views.all_software_hosts, name='software_list_server'),
 	path('software_list/software/<path:software_id>/', views.software_list_by_software, name='host_list_by_software'),
 
+	path('cisa_known/', views.cisa_known, name='cisa_known'),
 
 	path('nessus', views.nessus, name='nessus'),
 	path('nessus/plugin/<str:plugin_id>/', views.nessus_plugin_details, name='nessus_plugin_details'),

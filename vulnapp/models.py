@@ -162,6 +162,12 @@ class ExploitedVulnerability(models.Model):
 	def __str__(self):
 		return self.cve_id
 
+	def cve_ref(self):
+		try:
+			return CVE.objects.get(cve_id=self.cve_id)
+		except:
+			return None
+
 
 class Software(models.Model):
 	# Model to keep track of the software overview.

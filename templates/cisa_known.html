@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/filters.css' %}">
+<link rel="stylesheet" href="{% static 'css/cve_table.css' %}">
+<main class="main-content" style="width:100%">
+
+	<div class="filter-section">
+		<div class="filter-header">
+			<h2>CISA Known exploited vulnerabilities</h2>
+			<p style="text-align: center;">This page shows all newly published CISA Known exploited vulnerabilities the last {{ number_days}} days.</a></p>
+		</div>
+	</div>
+
+		{% for day in days %}
+			<h2>{{ day.datetime|date:"d. F" }}</h2>
+			<section class="vulnerabilities-list" id="latest">
+			{% for known_exploited in day.known_exploited %}
+				<article class="cve">
+					 <div class="cve-header">
+						<h3 class="cve-title"><a style="text-decoration: none; color: black;" target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ known_exploited.cve_ref.cve_id }}">{{ known_exploited.cve_ref.cve_id }}</a></h3>
+						<div class="cve-tags">
+							<div class="cve-tag cve-criticality {{ known_exploited.cve_ref|get_criticality_level }}">
+								CVSS score: {{ known_exploited.cve_ref|get_criticality_level }} {{ known_exploited.cve_ref.cvss_score }}
+							</div>
+						</div>
+					</div>
+					<!-- Check the length of the description and truncate if necessary -->
+					<h4>{{ known_exploited.vulnerability_name }}</h4><br>
+
+					<p class="cve-description">
+						<b>{{ known_exploited.vendor_project }}</b>: {{ known_exploited.short_description|slice:":700" }}
+						<br><br>
+						<b>Action:</b>: {{ known_exploited.required_action|slice:":700" }}
+					</p>
+					<div class="cve-details">
+						<span>Published: {{ known_exploited.date_added|date:"M d, Y" }}</span>
+						<span>Due date: {{ known_exploited.due_date|date:"M d, Y" }}</span>
+						<span>Campaign use: {{ known_exploited.known_ransomware_campaign_use }}</span>
+
+					</div>
+					{% if known_exploited.cve_ref.keywords %}
+						<div class="cve-keywords">
+						{% for keyword in known_exploited.cve_ref.keywords_list %}
+							<a target="_blank" href="https://kartoteket.oslo.kommune.no/sok/?search_term={{keyword}}">{{ keyword }}</a>
+							{% if not forloop.last %}, {% endif %}
+						{% endfor %}
+
+						</div>
+					{% endif %}
+				</article>
+			{% empty %}
+				<p>Nothing to show</p>
+			{% endfor %}
+			</section>
+		{% endfor %}
+
+</main>
+{% endblock %}
+
+
+
+
