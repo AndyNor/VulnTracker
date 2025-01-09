@@ -34,7 +34,7 @@ def home(request):
 def cisa_known(request):
 
 	#cvss_limit = 6.5
-	number_days = 21
+	number_days = 70
 	days = []
 
 	for day in range(number_days):
