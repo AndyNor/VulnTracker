@@ -35,9 +35,10 @@
 						<b>{{ known_exploited.vendor_project }}</b>: {{ known_exploited.short_description|slice:":700" }}
 						<br><br>
 						<b>Action:</b>: {{ known_exploited.required_action|slice:":700" }}
+						<br><br>
+						<a href="https://kartoteket.oslo.kommune.no/rapport/vulnstats/search/?query={{known_exploited.cve_ref}}" target="_blank">Lookup in Qualys-data</a>
 					</p>
 
-					<a href="https://kartoteket.oslo.kommune.no/rapport/vulnstats/search/?query={{known_exploited.cve_ref}}" target="_blank">Sjekk qualysdata</a>
 
 					<div class="cve-details">
 						<span>Published: {{ known_exploited.date_added|date:"M d, Y" }}</span>
