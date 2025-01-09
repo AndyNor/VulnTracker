@@ -57,6 +57,7 @@ class CVE(models.Model):
 		try:
 			return json.loads(self.keywords)
 		except:
+			print(f"Failed to json.loads: {self.keywords}")
 			return []
 
 
