@@ -78,7 +78,7 @@ class Command(BaseCommand):
 					word_matches = list(word_matches)
 
 					if len(word_matches) > 0:
-						print(f"{word_matches}: {cve.cve_id}")
+						#print(f"{word_matches}: {cve.cve_id}")
 						cve.keywords = json.dumps(word_matches)
 						cve.save()
 					else:
@@ -213,5 +213,7 @@ class Command(BaseCommand):
 		except Exception as e:
 			scan_status.status = 'error'
 			scan_status.error_message = str(e)
+			import traceback
+			print(f"{traceback.format_exc()}")
 			scan_status.save()
 			self.stdout.write(self.style.ERROR(f'Failed to save CVE data: {str(e)}'))
