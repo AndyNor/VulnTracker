@@ -150,6 +150,7 @@ class Command(BaseCommand):
 
 			for item in data["vulnerabilities"]:
 				cve_id = item['cve']['id']
+				print(f"Laster inn {cve_id}")
 
 				description_data = item['cve']['descriptions']
 				description_en = next((desc['value'] for desc in description_data if desc['lang'] == 'en'), None)
