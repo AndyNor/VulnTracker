@@ -163,7 +163,8 @@ class Command(BaseCommand):
 				cvss_data = cvss_metrics[0]['cvssData'] if cvss_metrics else {}
 				cvss_score = cvss_data.get('baseScore', 0)
 				if cvss_score == 0:
-					print(cvss_metrics)
+					print("\n*** CVE score er 0")
+					print(item)
 
 				cvss_vector = cvss_data.get('vectorString', "N/A")
 				cvss_severity = cvss_data.get('baseSeverity', 0)
