@@ -76,7 +76,7 @@ def cve(request):
 
 		day_cves = CVE.objects.filter(published_date__date=current_date)
 		day_cves = day_cves.filter(cvss_score__gte=cvss_limit)
-		day_cves = day_cves.exclude(keywords=None, cvss_score__lt=cvss_critical_limit)
+		day_cves = day_cves.exclude(Q(keywords=None) & Q(cvss_score__lt=cvss_critical_limit))
 		day_cves = day_cves.order_by('-cvss_score')
 
 		days.append({"datetime": current_date, "cves": list(day_cves)})
