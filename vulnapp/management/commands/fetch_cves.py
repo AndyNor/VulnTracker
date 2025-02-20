@@ -162,6 +162,8 @@ class Command(BaseCommand):
 				cvss_metrics = item['cve']['metrics'].get('cvssMetricV40', None)
 				if cvss_metrics == None:
 					cvss_metrics = item['cve']['metrics'].get('cvssMetricV31', None)
+				if cvss_metrics == None:
+					cvss_metrics = item['cve']['metrics'].get('cvssMetricV30', None)
 
 				cvss_data = cvss_metrics[0]['cvssData'] if cvss_metrics else {}
 				cvss_score = cvss_data.get('baseScore', 0)
