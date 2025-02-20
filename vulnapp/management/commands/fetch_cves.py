@@ -159,12 +159,15 @@ class Command(BaseCommand):
 				else:
 					description = "No description available."
 
-				cvss_metrics = item['cve']['metrics'].get('cvssMetricV31')
+				cvss_metrics = item['cve']['metrics'].get('cvssMetricV40', None)
+				if cvss_metrics == None:
+					cvss_metrics = item['cve']['metrics'].get('cvssMetricV31', None)
+
 				cvss_data = cvss_metrics[0]['cvssData'] if cvss_metrics else {}
 				cvss_score = cvss_data.get('baseScore', 0)
 				if cvss_score == 0:
 					print("\n*** CVE score er 0")
-					print(item)
+					print(json.dumps(item, indent=2))
 
 				cvss_vector = cvss_data.get('vectorString', "N/A")
 				cvss_severity = cvss_data.get('baseSeverity', 0)
