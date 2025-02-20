@@ -96,7 +96,7 @@ class Command(BaseCommand):
 
 	def fetch_cves_past_3day(self):
 		today = datetime.utcnow()
-		yesterday = today - timedelta(days=7)
+		yesterday = today - timedelta(days=3)
 		return self.fetch_cves(yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
 
 	def fetch_cves(self, date_start, date_end):
