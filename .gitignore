@@ -4,3 +4,4 @@
 *migrations
 *project_secrets.py
 this_env.py
+/.venv
